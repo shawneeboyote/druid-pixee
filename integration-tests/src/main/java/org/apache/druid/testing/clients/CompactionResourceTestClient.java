@@ -22,6 +22,8 @@ package org.apache.druid.testing.clients;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.http.client.HttpClient;
@@ -71,7 +73,7 @@ public class CompactionResourceTestClient
   {
     String url = StringUtils.format("%sconfig/compaction", getCoordinatorURL());
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.POST, new URL(url)).setContent(
+        new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)).setContent(
             "application/json",
             jsonMapper.writeValueAsBytes(dataSourceCompactionConfig)
         ), responseHandler
@@ -89,7 +91,7 @@ public class CompactionResourceTestClient
   public void deleteCompactionConfig(final String dataSource) throws Exception
   {
     String url = StringUtils.format("%sconfig/compaction/%s", getCoordinatorURL(), StringUtils.urlEncode(dataSource));
-    StatusResponseHolder response = httpClient.go(new Request(HttpMethod.DELETE, new URL(url)), responseHandler).get();
+    StatusResponseHolder response = httpClient.go(new Request(HttpMethod.DELETE, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), responseHandler).get();
 
     if (!response.getStatus().equals(HttpResponseStatus.OK)) {
       throw new ISE(
@@ -104,7 +106,7 @@ public class CompactionResourceTestClient
   {
     String url = StringUtils.format("%sconfig/compaction", getCoordinatorURL());
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.GET, new URL(url)), responseHandler
+        new Request(HttpMethod.GET, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), responseHandler
     ).get();
     if (!response.getStatus().equals(HttpResponseStatus.OK)) {
       throw new ISE(
@@ -120,7 +122,7 @@ public class CompactionResourceTestClient
   {
     String url = StringUtils.format("%sconfig/compaction/%s", getCoordinatorURL(), StringUtils.urlEncode(dataSource));
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.GET, new URL(url)), responseHandler
+        new Request(HttpMethod.GET, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), responseHandler
     ).get();
     if (!response.getStatus().equals(HttpResponseStatus.OK)) {
       throw new ISE(
@@ -135,7 +137,7 @@ public class CompactionResourceTestClient
   public void forceTriggerAutoCompaction() throws Exception
   {
     String url = StringUtils.format("%scompaction/compact", getCoordinatorURL());
-    StatusResponseHolder response = httpClient.go(new Request(HttpMethod.POST, new URL(url)), responseHandler).get();
+    StatusResponseHolder response = httpClient.go(new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), responseHandler).get();
     if (!response.getStatus().equals(HttpResponseStatus.OK)) {
       throw new ISE(
           "Error while force trigger auto compaction status[%s] content[%s]",
@@ -160,7 +162,7 @@ public class CompactionResourceTestClient
                                       StringUtils.urlEncode(maxCompactionTaskSlots.toString()),
                                       StringUtils.urlEncode(useAutoScaleSlots.toString()));
     }
-    StatusResponseHolder response = httpClient.go(new Request(HttpMethod.POST, new URL(url)), responseHandler).get();
+    StatusResponseHolder response = httpClient.go(new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), responseHandler).get();
     if (!response.getStatus().equals(HttpResponseStatus.OK)) {
       throw new ISE(
           "Error while updating compaction task slot status[%s] content[%s]",
@@ -174,7 +176,7 @@ public class CompactionResourceTestClient
   {
     String url = StringUtils.format("%scompaction/progress?dataSource=%s", getCoordinatorURL(), StringUtils.urlEncode(dataSource));
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.GET, new URL(url)), responseHandler
+        new Request(HttpMethod.GET, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), responseHandler
     ).get();
     if (!response.getStatus().equals(HttpResponseStatus.OK)) {
       throw new ISE(
@@ -190,7 +192,7 @@ public class CompactionResourceTestClient
   {
     String url = StringUtils.format("%scompaction/status?dataSource=%s", getCoordinatorURL(), StringUtils.urlEncode(dataSource));
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.GET, new URL(url)), responseHandler
+        new Request(HttpMethod.GET, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), responseHandler
     ).get();
     if (response.getStatus().equals(HttpResponseStatus.NOT_FOUND)) {
       return null;

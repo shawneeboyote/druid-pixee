@@ -20,6 +20,8 @@
 package org.apache.druid.discovery;
 
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.error.DruidException;
 import org.apache.druid.guice.annotations.EscalatedGlobal;
 import org.apache.druid.java.util.common.IOE;
@@ -72,7 +74,7 @@ public class BrokerClient
                           .ofCategory(DruidException.Category.NOT_FOUND)
                           .build("A leader node could not be found for [%s] service. Check the logs to validate that service is healthy.", NodeRole.BROKER);
     }
-    return new Request(httpMethod, new URL(StringUtils.format("%s%s", host, urlPath)));
+    return new Request(httpMethod, Urls.create(StringUtils.format("%s%s", host, urlPath), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
   }
 
   public String sendQuery(final Request request) throws Exception
@@ -110,7 +112,7 @@ public class BrokerClient
     try {
       return ClientUtils.withUrl(
           oldRequest,
-          new URL(StringUtils.format("%s%s", ClientUtils.pickOneHost(druidNodeDiscovery), oldRequest.getUrl().getPath()))
+          Urls.create(StringUtils.format("%s%s", ClientUtils.pickOneHost(druidNodeDiscovery), oldRequest.getUrl().getPath()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
       );
     }
     catch (MalformedURLException e) {
