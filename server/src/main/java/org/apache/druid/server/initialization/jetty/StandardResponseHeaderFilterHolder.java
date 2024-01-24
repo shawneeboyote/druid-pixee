@@ -21,6 +21,7 @@ package org.apache.druid.server.initialization.jetty;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
+import io.github.pixee.security.Newlines;
 import org.apache.commons.lang.CharUtils;
 import org.apache.druid.java.util.common.IAE;
 import org.apache.druid.server.initialization.ServerConfig;
@@ -158,7 +159,7 @@ public class StandardResponseHeaderFilterHolder implements ServletFilterHolder
         httpResponse.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
 
         // Set the desired Content-Security-Policy on non-POSTs. (It's for web pages, which we don't serve via POST.)
-        httpResponse.setHeader("Content-Security-Policy", contentSecurityPolicy);
+        httpResponse.setHeader("Content-Security-Policy", Newlines.stripAll(contentSecurityPolicy));
       }
 
       chain.doFilter(request, response);
