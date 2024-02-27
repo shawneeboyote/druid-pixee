@@ -22,6 +22,7 @@ package org.apache.druid.server.lookup.namespace.cache;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ForwardingConcurrentMap;
 import com.google.inject.Inject;
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.Cleaners;
 import org.apache.druid.java.util.common.lifecycle.Lifecycle;
 import org.apache.druid.java.util.common.logger.Logger;
@@ -160,7 +161,7 @@ public class OffHeapNamespaceExtractionCacheManager extends NamespaceExtractionC
   {
     super(lifecycle, serviceEmitter, config);
     try {
-      tmpFile = File.createTempFile("druidMapDB", getClass().getName());
+      tmpFile = Files.createTempFile("druidMapDB", getClass().getName()).toFile();
       log.info("Using file [%s] for mapDB off heap namespace cache", tmpFile.getAbsolutePath());
     }
     catch (IOException e) {
