@@ -223,7 +223,7 @@ public final class ConnectionUriUtils
 
     Object defaultOptions = optionsClass.getConstructor().newInstance();
     for (Field field : fields) {
-      if (field.getName().equals(MARIADB_EXTRAS)) {
+      if (MARIADB_EXTRAS.equals(field.getName())) {
         continue;
       }
       try {
@@ -262,7 +262,7 @@ public final class ConnectionUriUtils
 
     Object defaultConfiguration = buildMethod.invoke(configurationBuilderClass.getConstructor().newInstance());
     for (Field field : fields) {
-      if (field.getName().equals(MARIADB_EXTRAS)) {
+      if (MARIADB_EXTRAS.equals(field.getName())) {
         continue;
       }
       try {

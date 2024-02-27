@@ -342,9 +342,9 @@ public class S3Utils
       return null;
     }
 
-    if (protocol.equalsIgnoreCase("http")) {
+    if ("http".equalsIgnoreCase(protocol)) {
       return Protocol.HTTP;
-    } else if (protocol.equalsIgnoreCase("https")) {
+    } else if ("https".equalsIgnoreCase(protocol)) {
       return Protocol.HTTPS;
     } else {
       throw new IAE("Unknown protocol[%s]", protocol);

@@ -33,11 +33,11 @@ public class DbUtils
 
     // Use class names to avoid compile-time dependencies.
     // Derby implementation
-    if (cause.getClass().getSimpleName().equals("DerbySQLIntegrityConstraintViolationException")) {
+    if ("DerbySQLIntegrityConstraintViolationException".equals(cause.getClass().getSimpleName())) {
       return true;
     }
     // MySQL implementation
-    if (cause.getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
+    if ("MySQLIntegrityConstraintViolationException".equals(cause.getClass().getSimpleName())) {
       return true;
     }
 

@@ -244,16 +244,16 @@ public class MapPopulator<K, V>
   static long getByteLengthOfObject(@Nullable Object o)
   {
     if (null != o) {
-      if (o.getClass().getName().equals(STRING_CLASS_NAME)) {
+      if (STRING_CLASS_NAME.equals(o.getClass().getName())) {
         // Each String object has ~40 bytes of overhead
         return ((long) ((String) (o)).length() * Character.BYTES) + 40;
-      } else if (o.getClass().getName().equals(DOUBLE_CLASS_NAME)) {
+      } else if (DOUBLE_CLASS_NAME.equals(o.getClass().getName())) {
         return 8;
-      } else if (o.getClass().getName().equals(FLOAT_CLASS_NAME)) {
+      } else if (FLOAT_CLASS_NAME.equals(o.getClass().getName())) {
         return 4;
-      } else if (o.getClass().getName().equals(INTEGER_CLASS_NAME)) {
+      } else if (INTEGER_CLASS_NAME.equals(o.getClass().getName())) {
         return 4;
-      } else if (o.getClass().getName().equals(LONG_CLASS_NAME)) {
+      } else if (LONG_CLASS_NAME.equals(o.getClass().getName())) {
         return 8;
       }
     }
@@ -264,17 +264,17 @@ public class MapPopulator<K, V>
   static <K, V> boolean canKeyAndValueTypesByteSizesBeDetermined(@Nullable K key, @Nullable V value)
   {
     boolean canBeDetermined = (null == key
-                               || key.getClass().getName().equals(STRING_CLASS_NAME)
-                               || key.getClass().getName().equals(DOUBLE_CLASS_NAME)
-                               || key.getClass().getName().equals(FLOAT_CLASS_NAME)
-                               || key.getClass().getName().equals(INTEGER_CLASS_NAME)
-                               || key.getClass().getName().equals(LONG_CLASS_NAME))
+                               || STRING_CLASS_NAME.equals(key.getClass().getName())
+                               || DOUBLE_CLASS_NAME.equals(key.getClass().getName())
+                               || FLOAT_CLASS_NAME.equals(key.getClass().getName())
+                               || INTEGER_CLASS_NAME.equals(key.getClass().getName())
+                               || LONG_CLASS_NAME.equals(key.getClass().getName()))
                               && (null == value
-                                  || value.getClass().getName().equals(STRING_CLASS_NAME)
-                                  || value.getClass().getName().equals(DOUBLE_CLASS_NAME)
-                                  || value.getClass().getName().equals(FLOAT_CLASS_NAME)
-                                  || value.getClass().getName().equals(INTEGER_CLASS_NAME)
-                                  || value.getClass().getName().equals(LONG_CLASS_NAME));
+                                  || STRING_CLASS_NAME.equals(value.getClass().getName())
+                                  || DOUBLE_CLASS_NAME.equals(value.getClass().getName())
+                                  || FLOAT_CLASS_NAME.equals(value.getClass().getName())
+                                  || INTEGER_CLASS_NAME.equals(value.getClass().getName())
+                                  || LONG_CLASS_NAME.equals(value.getClass().getName()));
     if (!canBeDetermined) {
       LOG.warn(
           "cannot compute number of bytes when populating map because key and value classes are neither "

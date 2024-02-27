@@ -192,12 +192,12 @@ public class TimeBoundaryQuery extends BaseQuery<Result<TimeBoundaryResultValue>
 
   boolean isMinTime()
   {
-    return bound.equalsIgnoreCase(MIN_TIME);
+    return MIN_TIME.equalsIgnoreCase(bound);
   }
 
   boolean isMaxTime()
   {
-    return bound.equalsIgnoreCase(MAX_TIME);
+    return MAX_TIME.equalsIgnoreCase(bound);
   }
 
   @Override

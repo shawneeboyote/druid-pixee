@@ -1602,7 +1602,7 @@ public class ParallelIndexSupervisorTask extends AbstractBatchIndexTask implemen
   {
     if (indexGenerateRowStats != null) {
       return Pair.of(indexGenerateRowStats.lhs, includeUnparseable ? indexGenerateRowStats.rhs : ImmutableMap.of());
-    } else if (!currentRunner.getName().equals("partial segment generation")) {
+    } else if (!"partial segment generation".equals(currentRunner.getName())) {
       return Pair.of(ImmutableMap.of(), ImmutableMap.of());
     } else {
       Map<String, GeneratedPartitionsReport> completedSubtaskReports =

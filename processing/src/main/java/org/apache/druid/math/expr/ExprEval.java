@@ -640,7 +640,7 @@ public abstract class ExprEval<T>
     if (Evals.asBoolean(value)) {
       return 1.0;
     }
-    if (value.equalsIgnoreCase("false")) {
+    if ("false".equalsIgnoreCase(value)) {
       return 0.0;
     }
     Number rv;

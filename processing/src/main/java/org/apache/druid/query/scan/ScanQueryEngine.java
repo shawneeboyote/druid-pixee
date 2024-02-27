@@ -248,7 +248,7 @@ public class ScanQueryEngine
                             final BaseObjectColumnValueSelector selector = columnSelectors.get(i);
                             final Object value;
 
-                            if (legacy && allColumns.get(i).equals(LEGACY_TIMESTAMP_KEY)) {
+                            if (legacy && LEGACY_TIMESTAMP_KEY.equals(allColumns.get(i))) {
                               value = DateTimes.utc((long) selector.getObject());
                             } else {
                               value = selector == null ? null : selector.getObject();

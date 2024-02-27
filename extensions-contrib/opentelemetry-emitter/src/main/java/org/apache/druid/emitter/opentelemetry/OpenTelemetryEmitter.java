@@ -71,7 +71,7 @@ public class OpenTelemetryEmitter implements Emitter
 
     // We only generate spans for the following types of events:
     // query/time
-    if (!event.getMetric().equals("query/time")) {
+    if (!"query/time".equals(event.getMetric())) {
       return;
     }
 
@@ -99,7 +99,7 @@ public class OpenTelemetryEmitter implements Emitter
       Object status = event.getUserDims().get("success");
       if (status == null) {
         span.setStatus(StatusCode.UNSET);
-      } else if (status.toString().equals("true")) {
+      } else if ("true".equals(status.toString())) {
         span.setStatus(StatusCode.OK);
       } else {
         span.setStatus(StatusCode.ERROR);
