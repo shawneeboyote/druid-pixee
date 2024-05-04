@@ -19,6 +19,7 @@
 
 package org.apache.druid.security.kerberos;
 
+import io.github.pixee.security.Newlines;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.logger.Logger;
 import org.apache.hadoop.security.authentication.client.AuthenticationException;
@@ -185,9 +186,9 @@ public class DruidKerberosAuthenticationHandler extends KerberosAuthenticationHa
                 String authenticate = StringUtils.encodeBase64String(serverToken);
                 response.setHeader(
                     org.apache.hadoop.security.authentication.client.KerberosAuthenticator.WWW_AUTHENTICATE,
-                    org.apache.hadoop.security.authentication.client.KerberosAuthenticator.NEGOTIATE
+                    Newlines.stripAll(org.apache.hadoop.security.authentication.client.KerberosAuthenticator.NEGOTIATE
                     + " "
-                    + authenticate
+                    + authenticate)
                 );
               }
               if (!gssContext.isEstablished()) {
