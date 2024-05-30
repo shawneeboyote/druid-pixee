@@ -27,6 +27,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.RE;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.concurrent.Execs;
@@ -456,7 +458,7 @@ public class DirectDruidClient<T> implements QueryRunner<T>
       future = httpClient.go(
           new Request(
               HttpMethod.POST,
-              new URL(url)
+              Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ).setContent(objectMapper.writeValueAsBytes(Queries.withTimeout(query, timeLeft)))
            .setHeader(
                HttpHeaders.Names.CONTENT_TYPE,
@@ -540,7 +542,7 @@ public class DirectDruidClient<T> implements QueryRunner<T>
     Runnable cancelRunnable = () -> {
       try {
         Future<StatusResponseHolder> responseFuture = httpClient.go(
-            new Request(HttpMethod.DELETE, new URL(cancelUrl))
+            new Request(HttpMethod.DELETE, Urls.create(cancelUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))
             .setContent(objectMapper.writeValueAsBytes(query))
             .setHeader(HttpHeaders.Names.CONTENT_TYPE, isSmile ? SmileMediaTypes.APPLICATION_JACKSON_SMILE : MediaType.APPLICATION_JSON),
             StatusResponseHandler.getInstance(),

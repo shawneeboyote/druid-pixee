@@ -31,6 +31,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.net.HostAndPort;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.concurrent.LifecycleLock;
 import org.apache.druid.discovery.DataNodeService;
 import org.apache.druid.discovery.DiscoveryDruidNode;
@@ -540,7 +542,7 @@ public class HttpServerInventoryView implements ServerInventoryView, FilteredSer
             smileMapper,
             httpClient,
             inventorySyncExecutor,
-            new URL(druidServer.getScheme(), hostAndPort.getHost(), hostAndPort.getPort(), "/"),
+            Urls.create(druidServer.getScheme(), hostAndPort.getHost(), hostAndPort.getPort(), "/", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS),
             "/druid-internal/v1/segments",
             SEGMENT_LIST_RESP_TYPE_REF,
             config.getServerTimeout(),

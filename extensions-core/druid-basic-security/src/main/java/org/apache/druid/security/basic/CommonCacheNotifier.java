@@ -21,6 +21,8 @@ package org.apache.druid.security.basic;
 
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.discovery.DiscoveryDruidNode;
 import org.apache.druid.discovery.DruidNodeDiscovery;
 import org.apache.druid.discovery.DruidNodeDiscoveryProvider;
@@ -195,12 +197,7 @@ public class CommonCacheNotifier
   private URL getListenerURL(DruidNode druidNode, String baseUrl)
   {
     try {
-      return new URL(
-          druidNode.getServiceScheme(),
-          druidNode.getHost(),
-          druidNode.getPortToUse(),
-          baseUrl
-      );
+      return Urls.create(druidNode.getServiceScheme(), druidNode.getHost(), druidNode.getPortToUse(), baseUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (MalformedURLException mue) {
       LOG.error(callerName + ": Malformed url for DruidNode[%s] and baseUrl[%s]", druidNode, baseUrl);

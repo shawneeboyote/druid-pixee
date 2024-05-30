@@ -23,6 +23,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Predicates;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.client.indexing.TaskStatusResponse;
 import org.apache.druid.indexer.TaskState;
 import org.apache.druid.indexer.TaskStatusPlus;
@@ -86,7 +88,7 @@ public class OverlordResourceTestClient
       return RetryUtils.retry(
           () -> {
             StatusResponseHolder response = httpClient.go(
-                new Request(HttpMethod.POST, new URL(getIndexerURL() + "task"))
+                new Request(HttpMethod.POST, Urls.create(getIndexerURL() + "task", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))
                     .setContent(
                         "application/json",
                         StringUtils.toUtf8(task)
@@ -289,7 +291,7 @@ public class OverlordResourceTestClient
       String jsonBody = jsonMapper.writeValueAsString(minTaskPriority);
 
       StatusResponseHolder response = httpClient.go(
-          new Request(HttpMethod.POST, new URL(getIndexerURL() + "lockedIntervals"))
+          new Request(HttpMethod.POST, Urls.create(getIndexerURL() + "lockedIntervals", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))
               .setContent(
                   "application/json",
                   StringUtils.toUtf8(jsonBody)
@@ -369,7 +371,7 @@ public class OverlordResourceTestClient
   {
     try {
       StatusResponseHolder response = httpClient.go(
-          new Request(HttpMethod.POST, new URL(getIndexerURL() + "supervisor"))
+          new Request(HttpMethod.POST, Urls.create(getIndexerURL() + "supervisor", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))
               .setContent(
                   "application/json",
                   StringUtils.toUtf8(spec)
@@ -401,11 +403,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.POST,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/shutdown",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -432,11 +434,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.POST,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/terminate",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -463,11 +465,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.POST,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%stask/%s/shutdown",
                       getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -494,11 +496,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.GET,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/status",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -535,11 +537,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.POST,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/suspend",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -566,11 +568,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.GET,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/stats",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -597,11 +599,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.GET,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/health",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -628,11 +630,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.POST,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/resume",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -659,11 +661,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.POST,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/reset",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -690,11 +692,11 @@ public class OverlordResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.GET,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%ssupervisor/%s/history",
                   getIndexerURL(),
                   StringUtils.urlEncode(id)
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();
@@ -724,7 +726,7 @@ public class OverlordResourceTestClient
   {
     try {
       StatusResponseHolder response = this.httpClient
-          .go(new Request(method, new URL(url)), StatusResponseHandler.getInstance()).get();
+          .go(new Request(method, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)), StatusResponseHandler.getInstance()).get();
       if (!response.getStatus().equals(HttpResponseStatus.OK)) {
         throw new ISE("Error while making request to indexer [%s %s]", response.getStatus(), response.getContent());
       }
