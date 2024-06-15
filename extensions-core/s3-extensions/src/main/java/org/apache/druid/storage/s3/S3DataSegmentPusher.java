@@ -23,6 +23,7 @@ import com.amazonaws.AmazonServiceException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.emitter.EmittingLogger;
 import org.apache.druid.segment.SegmentUtils;
@@ -88,7 +89,7 @@ public class S3DataSegmentPusher implements DataSegmentPusher
     final String s3Path = S3Utils.constructSegmentPath(config.getBaseKey(), storageDirSuffix);
     log.debug("Copying segment[%s] to S3 at location[%s]", inSegment.getId(), s3Path);
 
-    final File zipOutFile = File.createTempFile("druid", "index.zip");
+    final File zipOutFile = Files.createTempFile("druid", "index.zip").toFile();
     final long indexSize = CompressionUtils.zip(indexFilesDir, zipOutFile);
 
     final DataSegment outSegment = inSegment.withSize(indexSize)
