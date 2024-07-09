@@ -22,6 +22,7 @@ package org.apache.druid.indexer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import io.github.pixee.security.ZipSecurity;
 import org.apache.druid.java.util.common.DateTimes;
 import org.apache.druid.java.util.common.FileUtils;
 import org.apache.druid.java.util.common.IAE;
@@ -766,7 +767,7 @@ public class JobHelper
               long size = 0L;
               final byte[] buffer = new byte[1 << 13];
               progressable.progress();
-              try (ZipInputStream in = new ZipInputStream(fileSystem.open(zip, 1 << 13))) {
+              try (ZipInputStream in = ZipSecurity.createHardenedInputStream(fileSystem.open(zip, 1 << 13))) {
                 for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in.getNextEntry()) {
                   final String fileName = entry.getName();
                   final String outputPath = new File(outDir, fileName).getAbsolutePath();
