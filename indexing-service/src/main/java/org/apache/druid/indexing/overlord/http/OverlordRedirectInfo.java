@@ -22,6 +22,8 @@ package org.apache.druid.indexing.overlord.http;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.indexing.overlord.TaskMaster;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.server.http.RedirectInfo;
@@ -66,7 +68,7 @@ public class OverlordRedirectInfo implements RedirectInfo
         location = StringUtils.format("%s?%s", location, queryString);
       }
 
-      return new URL(location);
+      return Urls.create(location, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (Exception e) {
       throw new RuntimeException(e);

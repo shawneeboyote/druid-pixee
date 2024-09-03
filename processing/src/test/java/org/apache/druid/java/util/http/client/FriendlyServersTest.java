@@ -20,6 +20,8 @@
 package org.apache.druid.java.util.http.client;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.lifecycle.Lifecycle;
 import org.apache.druid.java.util.http.client.response.StatusResponseHandler;
@@ -100,7 +102,7 @@ public class FriendlyServersTest
           .go(
               new Request(
                   HttpMethod.GET,
-                  new URL(StringUtils.format("http://localhost:%d/", serverSocket.getLocalPort()))
+                  Urls.create(StringUtils.format("http://localhost:%d/", serverSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
               ),
               StatusResponseHandler.getInstance()
           ).get();
@@ -237,7 +239,7 @@ public class FriendlyServersTest
           .go(
               new Request(
                   HttpMethod.GET,
-                  new URL(StringUtils.format("http://localhost:%d/", serverSocket.getLocalPort()))
+                  Urls.create(StringUtils.format("http://localhost:%d/", serverSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
               ),
               StatusResponseHandler.getInstance()
           ).get();
@@ -296,7 +298,7 @@ public class FriendlyServersTest
             .go(
                 new Request(
                     HttpMethod.GET,
-                    new URL(StringUtils.format("https://localhost:%d/", sslConnector.getLocalPort()))
+                    Urls.create(StringUtils.format("https://localhost:%d/", sslConnector.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
                 ),
                 StatusResponseHandler.getInstance()
             ).get().getStatus();
@@ -309,7 +311,7 @@ public class FriendlyServersTest
             .go(
                 new Request(
                     HttpMethod.GET,
-                    new URL(StringUtils.format("https://127.0.0.1:%d/", sslConnector.getLocalPort()))
+                    Urls.create(StringUtils.format("https://127.0.0.1:%d/", sslConnector.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
                 ),
                 StatusResponseHandler.getInstance()
             );
@@ -332,7 +334,7 @@ public class FriendlyServersTest
             .go(
                 new Request(
                     HttpMethod.GET,
-                    new URL(StringUtils.format("https://localhost:%d/", sslConnector.getLocalPort()))
+                    Urls.create(StringUtils.format("https://localhost:%d/", sslConnector.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
                 ),
                 StatusResponseHandler.getInstance()
             );

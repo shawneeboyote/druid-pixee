@@ -22,6 +22,8 @@ package org.apache.druid.testing.clients;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.smile.SmileMediaTypes;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.jackson.JacksonUtils;
@@ -95,7 +97,7 @@ public class EventReceiverFirehoseTestClient
     while (true) {
       try {
         StatusResponseHolder response = httpClient.go(
-            new Request(HttpMethod.POST, new URL(getURL()))
+            new Request(HttpMethod.POST, Urls.create(getURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))
                 .setContent(mediaType, objectMapper.writeValueAsBytes(events)),
             StatusResponseHandler.getInstance()
         ).get();

@@ -20,6 +20,8 @@
 package org.apache.druid.java.util.http.client;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.lifecycle.Lifecycle;
 import org.apache.druid.java.util.http.client.response.StatusResponseHandler;
@@ -158,7 +160,7 @@ public class JankyServersTest
       final HttpClient client = HttpClientInit.createClient(config, lifecycle);
       final ListenableFuture<StatusResponseHolder> future = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("http://localhost:%d/", silentServerSocket.getLocalPort()))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("http://localhost:%d/", silentServerSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
 
@@ -186,7 +188,7 @@ public class JankyServersTest
       final HttpClient client = HttpClientInit.createClient(config, lifecycle);
       final ListenableFuture<StatusResponseHolder> future = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("http://localhost:%d/", silentServerSocket.getLocalPort()))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("http://localhost:%d/", silentServerSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance(),
               new Duration(100L)
           );
@@ -219,7 +221,7 @@ public class JankyServersTest
 
       final ListenableFuture<StatusResponseHolder> response = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("https://localhost:%d/", silentServerSocket.getLocalPort()))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("https://localhost:%d/", silentServerSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
 
@@ -247,7 +249,7 @@ public class JankyServersTest
       final HttpClient client = HttpClientInit.createClient(config, lifecycle);
       final ListenableFuture<StatusResponseHolder> response = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("http://localhost:%d/", closingServerSocket.getLocalPort()))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("http://localhost:%d/", closingServerSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
       Throwable e = null;
@@ -276,7 +278,7 @@ public class JankyServersTest
 
       final ListenableFuture<StatusResponseHolder> response = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("https://localhost:%d/", closingServerSocket.getLocalPort()))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("https://localhost:%d/", closingServerSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
 
@@ -312,7 +314,7 @@ public class JankyServersTest
 
       final ListenableFuture<StatusResponseHolder> response = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("http://localhost:%d/", port))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("http://localhost:%d/", port), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
 
@@ -348,7 +350,7 @@ public class JankyServersTest
 
       final ListenableFuture<StatusResponseHolder> response = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("https://localhost:%d/", port))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("https://localhost:%d/", port), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
 
@@ -384,7 +386,7 @@ public class JankyServersTest
       final HttpClient client = HttpClientInit.createClient(config, lifecycle);
       final ListenableFuture<StatusResponseHolder> response = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("http://localhost:%d/", echoServerSocket.getLocalPort()))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("http://localhost:%d/", echoServerSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
 
@@ -408,7 +410,7 @@ public class JankyServersTest
 
       final ListenableFuture<StatusResponseHolder> response = client
           .go(
-              new Request(HttpMethod.GET, new URL(StringUtils.format("https://localhost:%d/", echoServerSocket.getLocalPort()))),
+              new Request(HttpMethod.GET, Urls.create(StringUtils.format("https://localhost:%d/", echoServerSocket.getLocalPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
               StatusResponseHandler.getInstance()
           );
 

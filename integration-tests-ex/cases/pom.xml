@@ -311,7 +311,10 @@
             <version>2.2.0</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.github.pixee</groupId>
+            <artifactId>java-security-toolkit</artifactId>
+        </dependency>
     </dependencies>
 
     <!-- Exclude ITs from surefire. Required because they end with "Test". -->

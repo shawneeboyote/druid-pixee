@@ -28,6 +28,8 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.guice.GuiceInjectors;
 import org.apache.druid.guice.Jerseys;
 import org.apache.druid.guice.JsonConfigProvider;
@@ -134,7 +136,7 @@ public class JettyQosTest extends BaseJettyTest
             try {
               ListenableFuture<StatusResponseHolder> go =
                   slowClient.go(
-                      new Request(HttpMethod.GET, new URL("http://localhost:" + port + "/slow/hello")),
+                      new Request(HttpMethod.GET, Urls.create("http://localhost:" + port + "/slow/hello", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
                       StatusResponseHandler.getInstance()
                   );
               go.get();
@@ -169,7 +171,7 @@ public class JettyQosTest extends BaseJettyTest
             try {
               ListenableFuture<StatusResponseHolder> go =
                   fastClient.go(
-                      new Request(HttpMethod.GET, new URL("http://localhost:" + port + "/default")),
+                      new Request(HttpMethod.GET, Urls.create("http://localhost:" + port + "/default", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
                     StatusResponseHandler.getInstance()
                   );
               go.get();

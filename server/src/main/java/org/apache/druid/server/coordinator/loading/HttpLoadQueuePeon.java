@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.RE;
 import org.apache.druid.java.util.common.StringUtils;
@@ -140,13 +142,10 @@ public class HttpLoadQueuePeon implements LoadQueuePeon
 
     this.serverId = baseUrl;
     try {
-      this.changeRequestURL = new URL(
-          new URL(baseUrl),
-          StringUtils.nonStrictFormat(
+      this.changeRequestURL = Urls.create(Urls.create(baseUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), StringUtils.nonStrictFormat(
               "druid-internal/v1/segments/changeRequests?timeout=%d",
               config.getHttpLoadQueuePeonHostTimeout().getMillis()
-          )
-      );
+          ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (MalformedURLException ex) {
       throw new RuntimeException(ex);

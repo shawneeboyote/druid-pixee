@@ -26,6 +26,8 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.multibindings.Multibinder;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.io.IOUtils;
 import org.apache.druid.guice.GuiceInjectors;
 import org.apache.druid.guice.Jerseys;
@@ -307,7 +309,7 @@ public class JettyTest extends BaseJettyTest
                       try {
                         ListenableFuture<StatusResponseHolder> go =
                             client.go(
-                                new Request(HttpMethod.GET, new URL("http://localhost:" + port + "/slow/hello")),
+                                new Request(HttpMethod.GET, Urls.create("http://localhost:" + port + "/slow/hello", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
                                 StatusResponseHandler.getInstance()
                             );
                         startTime2 = System.currentTimeMillis();
@@ -341,7 +343,7 @@ public class JettyTest extends BaseJettyTest
   @Test
   public void testGzipResponseCompression() throws Exception
   {
-    final URL url = new URL("http://localhost:" + port + "/default");
+    final URL url = Urls.create("http://localhost:" + port + "/default", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     final HttpURLConnection get = (HttpURLConnection) url.openConnection();
     get.setRequestProperty("Accept-Encoding", "gzip");
     Assert.assertEquals("gzip", get.getContentEncoding());
@@ -381,7 +383,7 @@ public class JettyTest extends BaseJettyTest
   {
     ListenableFuture<InputStream> go =
         client.go(
-            new Request(HttpMethod.GET, new URL("http://localhost:" + port + "/exception/exception")),
+            new Request(HttpMethod.GET, Urls.create("http://localhost:" + port + "/exception/exception", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
             new InputStreamResponseHandler()
         );
     try {
@@ -407,7 +409,7 @@ public class JettyTest extends BaseJettyTest
           {
             try {
               ListenableFuture<InputStream> go = client.go(
-                  new Request(HttpMethod.GET, new URL("http://localhost:" + port + "/exception/exception")),
+                  new Request(HttpMethod.GET, Urls.create("http://localhost:" + port + "/exception/exception", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
                   new InputStreamResponseHandler()
               );
               StringWriter writer = new StringWriter();
@@ -430,7 +432,7 @@ public class JettyTest extends BaseJettyTest
   @Test
   public void testExtensionAuthFilter() throws Exception
   {
-    URL url = new URL("http://localhost:" + port + "/default");
+    URL url = Urls.create("http://localhost:" + port + "/default", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     HttpURLConnection get = (HttpURLConnection) url.openConnection();
     get.setRequestProperty(DummyAuthFilter.AUTH_HDR, DummyAuthFilter.SECRET_USER);
     Assert.assertEquals(HttpServletResponse.SC_OK, get.getResponseCode());
@@ -448,7 +450,7 @@ public class JettyTest extends BaseJettyTest
     try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out)) {
       gzipOutputStream.write(text.getBytes(Charset.defaultCharset()));
     }
-    Request request = new Request(HttpMethod.POST, new URL("http://localhost:" + port + "/return"));
+    Request request = new Request(HttpMethod.POST, Urls.create("http://localhost:" + port + "/return", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
     request.setHeader("Content-Encoding", "gzip");
     request.setContent(MediaType.TEXT_PLAIN, out.toByteArray());
     Assert.assertEquals(text, new String(IOUtils.toByteArray(client.go(
@@ -465,7 +467,7 @@ public class JettyTest extends BaseJettyTest
     try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out)) {
       gzipOutputStream.write(text.getBytes(Charset.defaultCharset()));
     }
-    Request request = new Request(HttpMethod.GET, new URL("http://localhost:" + port + "/latched/hello"));
+    Request request = new Request(HttpMethod.GET, Urls.create("http://localhost:" + port + "/latched/hello", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
     request.setHeader("Content-Encoding", "gzip");
     request.setContent(MediaType.TEXT_PLAIN, out.toByteArray());
 
@@ -494,7 +496,7 @@ public class JettyTest extends BaseJettyTest
     try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out)) {
       gzipOutputStream.write(text.getBytes(Charset.defaultCharset()));
     }
-    Request request = new Request(HttpMethod.GET, new URL("https://localhost:" + tlsPort + "/latched/hello"));
+    Request request = new Request(HttpMethod.GET, Urls.create("https://localhost:" + tlsPort + "/latched/hello", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
     request.setHeader("Content-Encoding", "gzip");
     request.setContent(MediaType.TEXT_PLAIN, out.toByteArray());
     HttpClient client;

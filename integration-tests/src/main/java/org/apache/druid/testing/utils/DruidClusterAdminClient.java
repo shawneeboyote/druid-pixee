@@ -27,6 +27,8 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.command.ExecStartResultCallback;
 import com.github.dockerjava.netty.NettyDockerCmdExecFactory;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.Pair;
 import org.apache.druid.java.util.common.StringUtils;
@@ -263,7 +265,7 @@ public class DruidClusterAdminClient
         () -> {
           try {
             StatusResponseHolder response = httpClient.go(
-                new Request(HttpMethod.GET, new URL(StringUtils.format("%s/status/health", host))),
+                new Request(HttpMethod.GET, Urls.create(StringUtils.format("%s/status/health", host), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
                 StatusResponseHandler.getInstance()
             ).get();
 
@@ -306,7 +308,7 @@ public class DruidClusterAdminClient
           try {
             String url = StringUtils.format("%s/druid/coordinator/v1/config", config.getCoordinatorUrl());
             StatusResponseHolder response = httpClient.go(
-                new Request(HttpMethod.POST, new URL(url)).setContent(
+                new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)).setContent(
                     "application/json",
                     jsonMapper.writeValueAsBytes(coordinatorDynamicConfig)
                 ), StatusResponseHandler.getInstance()
