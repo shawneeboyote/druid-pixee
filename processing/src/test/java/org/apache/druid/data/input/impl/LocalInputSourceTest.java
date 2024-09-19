@@ -183,7 +183,7 @@ public class LocalInputSourceTest
     File baseDir = temporaryFolder.newFolder();
     List<File> filesInBaseDir = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
-      final File file = File.createTempFile("local-input-source", ".data", baseDir);
+      final File file = Files.createTempFile(baseDir.toPath(), "local-input-source", ".data").toFile();
       try (Writer writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
         writer.write("test");
       }
@@ -191,7 +191,7 @@ public class LocalInputSourceTest
     }
     List<File> files = filesInBaseDir.subList(0, 5);
     for (int i = 0; i < 3; i++) {
-      final File file = File.createTempFile("local-input-source", ".data", baseDir);
+      final File file = Files.createTempFile(baseDir.toPath(), "local-input-source", ".data").toFile();
       try (Writer writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
         writer.write("test");
       }
@@ -199,7 +199,7 @@ public class LocalInputSourceTest
     }
     Set<File> expectedFiles = new HashSet<>(filesInBaseDir);
     expectedFiles.addAll(files);
-    File.createTempFile("local-input-source", ".filtered", baseDir);
+    Files.createTempFile(baseDir.toPath(), "local-input-source", ".filtered").toFile();
     Iterator<File> fileIterator = new LocalInputSource(baseDir, "*.data", files, null).getFileIterator();
     Set<File> actualFiles = Streams.sequentialStreamFrom(fileIterator).collect(Collectors.toSet());
     Assert.assertEquals(expectedFiles, actualFiles);
@@ -211,7 +211,7 @@ public class LocalInputSourceTest
     File baseDir = temporaryFolder.newFolder();
     Set<File> filesInBaseDir = new HashSet<>();
     for (int i = 0; i < 10; i++) {
-      final File file = File.createTempFile("local-input-source", ".data", baseDir);
+      final File file = Files.createTempFile(baseDir.toPath(), "local-input-source", ".data").toFile();
       try (Writer writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
         writer.write("test");
       }
@@ -228,7 +228,7 @@ public class LocalInputSourceTest
     File baseDir = temporaryFolder.newFolder();
     List<File> filesInBaseDir = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
-      final File file = File.createTempFile("local-input-source", ".data", baseDir);
+      final File file = Files.createTempFile(baseDir.toPath(), "local-input-source", ".data").toFile();
       try (Writer writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
         writer.write("test");
       }

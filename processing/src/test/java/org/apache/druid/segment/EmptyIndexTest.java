@@ -21,6 +21,7 @@ package org.apache.druid.segment;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import java.nio.file.Files;
 import org.apache.druid.collections.bitmap.ConciseBitmapFactory;
 import org.apache.druid.data.input.impl.DimensionsSpec;
 import org.apache.druid.java.util.common.FileUtils;
@@ -65,7 +66,7 @@ public class EmptyIndexTest
   @Test
   public void testEmptyIndex() throws Exception
   {
-    File tmpDir = File.createTempFile("emptyIndex", "");
+    File tmpDir = Files.createTempFile("emptyIndex", "").toFile();
     if (!tmpDir.delete()) {
       throw new IllegalStateException("tmp delete failed");
     }

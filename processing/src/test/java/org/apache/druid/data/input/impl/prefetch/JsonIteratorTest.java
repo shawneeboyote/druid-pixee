@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.jackson.JacksonUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,7 +47,7 @@ public class JsonIteratorTest
   {
     final ObjectMapper mapper = new ObjectMapper(new SmileFactory());
     List<Map<String, Object>> expectedList = ImmutableList.of(ImmutableMap.of("key1", "value1", "key2", 2));
-    File testFile = File.createTempFile("testfile", "");
+    File testFile = Files.createTempFile("testfile", "").toFile();
     TypeReference<Map<String, Object>> type = new TypeReference<Map<String, Object>>()
     {
     };

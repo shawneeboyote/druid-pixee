@@ -19,6 +19,7 @@
 
 package org.apache.druid.segment.writeout;
 
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.FileUtils;
 import org.apache.druid.java.util.common.io.Closer;
 
@@ -43,7 +44,7 @@ public final class TmpFileSegmentWriteOutMedium implements SegmentWriteOutMedium
   @Override
   public WriteOutBytes makeWriteOutBytes() throws IOException
   {
-    File file = File.createTempFile("filePeon", null, dir);
+    File file = Files.createTempFile(dir.toPath(), "filePeon", null).toFile();
     FileChannel ch = FileChannel.open(
         file.toPath(),
         StandardOpenOption.READ,

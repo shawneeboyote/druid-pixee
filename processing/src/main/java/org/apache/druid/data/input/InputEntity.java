@@ -21,6 +21,7 @@ package org.apache.druid.data.input;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import java.nio.file.Files;
 import org.apache.druid.guice.annotations.UnstableApi;
 import org.apache.druid.java.util.common.FileUtils;
 import org.apache.druid.java.util.common.StringUtils;
@@ -88,7 +89,7 @@ public interface InputEntity
    */
   default CleanableFile fetch(File temporaryDirectory, byte[] fetchBuffer) throws IOException
   {
-    final File tempFile = File.createTempFile("druid-input-entity", ".tmp", temporaryDirectory);
+    final File tempFile = Files.createTempFile(temporaryDirectory.toPath(), "druid-input-entity", ".tmp").toFile();
     LOG.debug("Fetching entity into file[%s]", tempFile.getAbsolutePath());
 
     final URI uri = getUri();

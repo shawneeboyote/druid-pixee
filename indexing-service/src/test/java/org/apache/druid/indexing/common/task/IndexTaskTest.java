@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
+import java.nio.file.Files;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.druid.data.input.InputFormat;
 import org.apache.druid.data.input.impl.CSVParseSpec;
@@ -268,7 +269,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,,\n");
@@ -323,7 +324,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,,\n");
@@ -379,7 +380,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -434,7 +435,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,an|array,1|2|3,1\n");
@@ -573,7 +574,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -609,7 +610,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T07:59:59.977Z,a,1\n");
@@ -644,7 +645,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testNumShardsProvided() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -685,7 +686,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testNumShardsAndHashPartitionFunctionProvided() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -728,7 +729,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testNumShardsAndPartitionDimensionsProvided() throws Exception
   {
     final File tmpDir = temporaryFolder.newFolder();
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -801,7 +802,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testWriteNewSegmentsWithAppendToExistingWithLinearPartitioningSuccessfullyAppend() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -846,7 +847,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testIntervalNotSpecified() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -897,7 +898,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testIntervalNotSpecifiedWithReplace() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -936,7 +937,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("time,d,val\n");
@@ -993,7 +994,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("time,d,val\n");
@@ -1050,7 +1051,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testWithSmallMaxTotalRows() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -1103,7 +1104,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testPerfectRollup() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     populateRollupTestData(tmpFile);
 
@@ -1146,7 +1147,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testBestEffortRollup() throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     populateRollupTestData(tmpFile);
 
@@ -1448,7 +1449,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     final File tmpDir = temporaryFolder.newFolder();
 
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("time,d,val\n");
@@ -1509,7 +1510,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     final File tmpDir = temporaryFolder.newFolder();
 
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("time,d,val\n");
@@ -1581,7 +1582,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     final File tmpDir = temporaryFolder.newFolder();
 
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("{\"time\":\"unparseable\",\"dim\":\"a\",\"dimLong\":2,\"dimFloat\":3.0,\"val\":1}\n"); // unparseable time
@@ -1765,7 +1766,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     final File tmpDir = temporaryFolder.newFolder();
 
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("time,dim,dimLong,dimFloat,val\n");
@@ -1907,7 +1908,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     final File tmpDir = temporaryFolder.newFolder();
 
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("time,dim,dimLong,dimFloat,val\n");
@@ -2040,21 +2041,21 @@ public class IndexTaskTest extends IngestionTestBase
   {
     final File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("ts,,\n");
       writer.write("2014-01-01T00:00:10Z,a,1\n");
     }
 
-    tmpFile = File.createTempFile("druid", "index", tmpDir);
+    tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("ts,dim,\n");
       writer.write("2014-01-01T00:00:10Z,a,1\n");
     }
 
-    tmpFile = File.createTempFile("druid", "index", tmpDir);
+    tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("ts,,val\n");
@@ -2127,7 +2128,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     final File tmpDir = temporaryFolder.newFolder();
 
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write(",,\n");
@@ -2199,7 +2200,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testOverwriteWithSameSegmentGranularity() throws Exception
   {
     final File tmpDir = temporaryFolder.newFolder();
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     populateRollupTestData(tmpFile);
 
@@ -2263,7 +2264,7 @@ public class IndexTaskTest extends IngestionTestBase
   public void testOverwriteWithDifferentSegmentGranularity() throws Exception
   {
     final File tmpDir = temporaryFolder.newFolder();
-    final File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     populateRollupTestData(tmpFile);
 
@@ -2336,7 +2337,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -2420,7 +2421,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T01:00:10Z,a,1\n");
@@ -2512,7 +2513,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
@@ -2590,7 +2591,7 @@ public class IndexTaskTest extends IngestionTestBase
   {
     File tmpDir = temporaryFolder.newFolder();
 
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-03-01T00:00:10Z,a,1\n");
@@ -2630,7 +2631,7 @@ public class IndexTaskTest extends IngestionTestBase
     // create new data but with an ingestion interval appropriate to filter it all out so that only tombstones
     // are created:
     tmpDir = temporaryFolder.newFolder();
-    tmpFile = File.createTempFile("druid", "index", tmpDir);
+    tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");
       writer.write("2014-01-01T01:00:20Z,b,1\n");

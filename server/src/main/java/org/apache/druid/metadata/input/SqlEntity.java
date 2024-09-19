@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.google.common.base.Preconditions;
+import java.nio.file.Files;
 import org.apache.druid.data.input.InputEntity;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.jackson.JacksonUtils;
@@ -92,7 +93,7 @@ public class SqlEntity implements InputEntity
   @Override
   public CleanableFile fetch(File temporaryDirectory, byte[] fetchBuffer) throws IOException
   {
-    final File tempFile = File.createTempFile("druid-sql-entity", ".tmp", temporaryDirectory);
+    final File tempFile = Files.createTempFile(temporaryDirectory.toPath(), "druid-sql-entity", ".tmp").toFile();
     return openCleanableFile(sql, sqlFirehoseDatabaseConnector, objectMapper, foldCase, tempFile);
 
   }
