@@ -27,6 +27,7 @@ import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import io.github.pixee.security.ZipSecurity;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorInputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
@@ -345,7 +346,7 @@ public class CompressionUtils
    */
   public static FileUtils.FileCopyResult unzip(InputStream in, File outDir) throws IOException
   {
-    try (final ZipInputStream zipIn = new ZipInputStream(in)) {
+    try (final ZipInputStream zipIn = ZipSecurity.createHardenedInputStream(in)) {
       final FileUtils.FileCopyResult result = new FileUtils.FileCopyResult();
       ZipEntry entry;
       while ((entry = zipIn.getNextEntry()) != null) {
@@ -631,7 +632,7 @@ public class CompressionUtils
       return new ZstdCompressorInputStream(in);
     } else if (fileName.endsWith(Format.ZIP.getSuffix())) {
       // This reads the first file in the archive.
-      final ZipInputStream zipIn = new ZipInputStream(in, StandardCharsets.UTF_8);
+      final ZipInputStream zipIn = ZipSecurity.createHardenedInputStream(in, StandardCharsets.UTF_8);
       try {
         final ZipEntry nextEntry = zipIn.getNextEntry();
         if (nextEntry == null) {
