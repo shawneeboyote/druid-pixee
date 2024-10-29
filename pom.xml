@@ -154,7 +154,8 @@
          <jacocoArgLine />
          <!--  used to enable continuous profiling of jdk17 unit tests in github actions  -->
          <jfrProfilerArgLine></jfrProfilerArgLine>
-    </properties>
+  <versions.java-security-toolkit>1.2.0</versions.java-security-toolkit>
+ </properties>
 
     <modules>
         <module>processing</module>
@@ -1327,7 +1328,20 @@
               </exclusion>
             </exclusions>
           </dependency>
-        </dependencies>
+   <dependency>
+    <groupId>io.github.pixee</groupId>
+    <artifactId>java-security-toolkit</artifactId>
+    <version>${versions.java-security-toolkit}</version>
+   </dependency>
+   <dependency>
+    <groupId>io.github.pixee</groupId>
+    <artifactId>java-security-toolkit</artifactId>
+    
+    
+    
+    <version>${versions.java-security-toolkit}</version>
+   </dependency>
+  </dependencies>
     </dependencyManagement>
 
     <build>
@@ -1725,7 +1739,7 @@
                         <trimStackTrace>false</trimStackTrace>
                         <!-- our tests are very verbose, let's keep the volume down -->
                         <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                        <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
+                        redirectTestOutputToFile&gt;
                     </configuration>
                 </plugin>
                 <plugin>
