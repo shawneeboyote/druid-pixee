@@ -20,6 +20,7 @@
 package org.apache.druid.server.initialization.jetty;
 
 import com.google.common.collect.ImmutableMap;
+import io.github.pixee.security.Newlines;
 import org.apache.druid.server.initialization.ServerConfig;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -145,7 +146,7 @@ public class StandardResponseHeaderFilterHolderTest
       final Capture<String> headerValueCapture = Capture.newInstance();
       captureMap.put(headerName, headerValueCapture);
 
-      httpResponse.setHeader(EasyMock.eq(headerName), EasyMock.capture(headerValueCapture));
+      httpResponse.setHeader(EasyMock.eq(headerName), Newlines.stripAll(EasyMock.capture(headerValueCapture)));
       EasyMock.expectLastCall();
     }
 

@@ -22,6 +22,7 @@ package org.apache.druid.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.CountingOutputStream;
+import io.github.pixee.security.Newlines;
 import org.apache.druid.client.DirectDruidClient;
 import org.apache.druid.error.DruidException;
 import org.apache.druid.error.ErrorResponse;
@@ -138,9 +139,9 @@ public abstract class QueryResultPusher
       // Response until it has consumed the underlying Sequence.
       asyncContext = request.startAsync();
       response = (HttpServletResponse) asyncContext.getResponse();
-      response.setHeader(QueryResource.QUERY_ID_RESPONSE_HEADER, queryId);
+      response.setHeader(QueryResource.QUERY_ID_RESPONSE_HEADER, Newlines.stripAll(queryId));
       for (Map.Entry<String, String> entry : extraHeaders.entrySet()) {
-        response.setHeader(entry.getKey(), entry.getValue());
+        response.setHeader(entry.getKey(), Newlines.stripAll(entry.getValue()));
       }
 
       accumulator = new StreamingHttpResponseAccumulator(queryResponse.getResponseContext(), resultsWriter);
@@ -263,7 +264,7 @@ public abstract class QueryResultPusher
       }
 
       response.setStatus(e.getStatusCode());
-      response.setHeader("Content-Type", contentType.toString());
+      response.setHeader("Content-Type", Newlines.stripAll(contentType.toString()));
       try (ServletOutputStream out = response.getOutputStream()) {
         writeException(e, out);
       }
@@ -375,7 +376,7 @@ public abstract class QueryResultPusher
 
         Object entityTag = responseContext.remove(ResponseContext.Keys.ETAG);
         if (entityTag != null) {
-          response.setHeader(QueryResource.HEADER_ETAG, entityTag.toString());
+          response.setHeader(QueryResource.HEADER_ETAG, Newlines.stripAll(entityTag.toString()));
         }
 
         DirectDruidClient.removeMagicResponseContextFields(responseContext);
@@ -415,7 +416,7 @@ public abstract class QueryResultPusher
           }
         }
 
-        response.setHeader(QueryResource.HEADER_RESPONSE_CONTEXT, serializationResult.getResult());
+        response.setHeader(QueryResource.HEADER_RESPONSE_CONTEXT, Newlines.stripAll(serializationResult.getResult()));
         response.setContentType(contentType.toString());
 
         try {
