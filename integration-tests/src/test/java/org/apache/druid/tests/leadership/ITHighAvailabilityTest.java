@@ -22,6 +22,8 @@ package org.apache.druid.tests.leadership;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.cli.CliCustomNodeRole;
 import org.apache.druid.common.config.NullHandling;
 import org.apache.druid.curator.discovery.ServerDiscoveryFactory;
@@ -193,7 +195,7 @@ public class ITHighAvailabilityTest
       );
       LOG.info("testing self discovery %s", location);
       StatusResponseHolder response = httpClient.go(
-          new Request(HttpMethod.GET, new URL(location)),
+          new Request(HttpMethod.GET, Urls.create(location, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
           StatusResponseHandler.getInstance()
       ).get();
       LOG.info("%s responded with %s", location, response.getStatus().getCode());
@@ -232,11 +234,11 @@ public class ITHighAvailabilityTest
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.GET,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%s/druid/%s/v1/leader",
                   config.getRouterUrl(),
                   service
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           StatusResponseHandler.getInstance()
       ).get();

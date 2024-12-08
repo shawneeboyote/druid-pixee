@@ -31,6 +31,8 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.servlet.GuiceFilter;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.calcite.avatica.Meta;
 import org.apache.calcite.avatica.remote.Service;
 import org.apache.druid.common.exception.AllowedRegexErrorResponseTransformStrategy;
@@ -185,7 +187,7 @@ public class AsyncQueryForwardingServletTest extends BaseJettyTest
   @Test
   public void testProxyGzipCompression() throws Exception
   {
-    final URL url = new URL("http://localhost:" + port + "/proxy/default");
+    final URL url = Urls.create("http://localhost:" + port + "/proxy/default", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
     final HttpURLConnection get = (HttpURLConnection) url.openConnection();
     get.setRequestProperty("Accept-Encoding", "gzip");
@@ -211,7 +213,7 @@ public class AsyncQueryForwardingServletTest extends BaseJettyTest
     makeTestDeleteServer(port1, latch).start();
     makeTestDeleteServer(port2, latch).start();
 
-    final URL url = new URL("http://localhost:" + port + "/druid/v2/abc123");
+    final URL url = Urls.create("http://localhost:" + port + "/druid/v2/abc123", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     final HttpURLConnection post = (HttpURLConnection) url.openConnection();
     post.setRequestMethod("DELETE");
     int code = post.getResponseCode();

@@ -20,6 +20,8 @@
 package org.apache.druid.tests.query;
 
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.io.IOUtils;
 import org.apache.druid.curator.discovery.ServerDiscoveryFactory;
 import org.apache.druid.curator.discovery.ServerDiscoverySelector;
@@ -218,7 +220,7 @@ public class ITUnionQueryTest extends AbstractIndexerTest
           () -> {
             try {
               StatusResponseHolder response = httpClient.go(
-                  new Request(HttpMethod.GET, new URL(StringUtils.format("https://%s/status/health", host))),
+                  new Request(HttpMethod.GET, Urls.create(StringUtils.format("https://%s/status/health", host), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
                   StatusResponseHandler.getInstance()
               ).get();
               return response.getStatus().equals(HttpResponseStatus.OK);

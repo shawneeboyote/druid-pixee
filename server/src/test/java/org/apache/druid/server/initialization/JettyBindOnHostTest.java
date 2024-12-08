@@ -24,6 +24,8 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.io.IOUtils;
 import org.apache.druid.guice.GuiceInjectors;
 import org.apache.druid.guice.Jerseys;
@@ -77,7 +79,7 @@ public class JettyBindOnHostTest extends BaseJettyTest
   {
     Assert.assertEquals("localhost", server.getURI().getHost());
 
-    final URL url = new URL("http://localhost:" + port + "/default");
+    final URL url = Urls.create("http://localhost:" + port + "/default", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     final HttpURLConnection get = (HttpURLConnection) url.openConnection();
     Assert.assertEquals(DEFAULT_RESPONSE_CONTENT, IOUtils.toString(get.getInputStream(), StandardCharsets.UTF_8));
 

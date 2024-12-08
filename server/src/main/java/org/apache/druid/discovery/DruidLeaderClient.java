@@ -21,6 +21,8 @@ package org.apache.druid.discovery;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.concurrent.LifecycleLock;
 import org.apache.druid.java.util.common.IOE;
 import org.apache.druid.java.util.common.ISE;
@@ -117,7 +119,7 @@ public class DruidLeaderClient
   public Request makeRequest(HttpMethod httpMethod, String urlPath) throws IOException
   {
     Preconditions.checkState(lifecycleLock.awaitStarted(1, TimeUnit.MILLISECONDS));
-    return new Request(httpMethod, new URL(StringUtils.format("%s%s", getCurrentKnownLeader(true), urlPath)));
+    return new Request(httpMethod, Urls.create(StringUtils.format("%s%s", getCurrentKnownLeader(true), urlPath), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
   }
 
   /**
@@ -181,7 +183,7 @@ public class DruidLeaderClient
 
         final URL redirectUrl;
         try {
-          redirectUrl = new URL(redirectUrlStr);
+          redirectUrl = Urls.create(redirectUrlStr, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         }
         catch (MalformedURLException ex) {
           throw new IOE(
@@ -235,7 +237,7 @@ public class DruidLeaderClient
 
       //verify this is valid url
       try {
-        URL validatedUrl = new URL(leaderUrl);
+        URL validatedUrl = Urls.create(leaderUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         currentKnownLeader.set(leaderUrl);
 
         // validatedUrl.toString() is returned instead of leaderUrl or else teamcity build fails because of breaking
@@ -279,17 +281,17 @@ public class DruidLeaderClient
       if (oldRequest.getUrl().getQuery() == null) {
         newRequest = ClientUtils.withUrl(
             oldRequest,
-            new URL(StringUtils.format("%s%s", getCurrentKnownLeader(false), oldRequest.getUrl().getPath()))
+            Urls.create(StringUtils.format("%s%s", getCurrentKnownLeader(false), oldRequest.getUrl().getPath()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
         );
       } else {
         newRequest = ClientUtils.withUrl(
             oldRequest,
-            new URL(StringUtils.format(
+            Urls.create(StringUtils.format(
                 "%s%s?%s",
                 getCurrentKnownLeader(false),
                 oldRequest.getUrl().getPath(),
                 oldRequest.getUrl().getQuery()
-            ))
+            ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
         );
       }
       return newRequest;

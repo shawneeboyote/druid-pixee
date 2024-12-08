@@ -21,6 +21,8 @@ package org.apache.druid.testsEx.cluster;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.RE;
 import org.apache.druid.java.util.common.StringUtils;
@@ -180,7 +182,7 @@ public class DruidClusterClient
   {
     try {
       StatusResponseHolder response = httpClient.go(
-          new Request(method, new URL(url)),
+          new Request(method, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
           StatusResponseHandler.getInstance()
       ).get();
 
@@ -216,7 +218,7 @@ public class DruidClusterClient
     try {
       final byte[] payload = jsonMapper.writeValueAsBytes(body);
       response = httpClient.go(
-          new Request(method, new URL(url))
+          new Request(method, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))
               .addHeader(HttpHeaders.Names.ACCEPT, MediaType.APPLICATION_JSON)
               .addHeader(HttpHeaders.Names.CONTENT_TYPE, MediaType.APPLICATION_JSON)
               .setContent(payload),

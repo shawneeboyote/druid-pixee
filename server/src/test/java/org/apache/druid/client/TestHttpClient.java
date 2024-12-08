@@ -22,6 +22,8 @@ package org.apache.druid.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.NonnullPair;
 import org.apache.druid.java.util.common.StringUtils;
@@ -91,7 +93,7 @@ public class TestHttpClient implements HttpClient
   private static URL computeUrl(DruidServer server)
   {
     try {
-      return new URL(StringUtils.format("%s://%s/druid/v2/", server.getScheme(), server.getHost()));
+      return Urls.create(StringUtils.format("%s://%s/druid/v2/", server.getScheme(), server.getHost()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (MalformedURLException e) {
       throw new RuntimeException(e);
