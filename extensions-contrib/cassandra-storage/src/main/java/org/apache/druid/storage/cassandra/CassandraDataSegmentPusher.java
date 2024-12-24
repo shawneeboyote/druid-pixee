@@ -88,7 +88,7 @@ public class CassandraDataSegmentPusher extends CassandraStorage implements Data
         storageDirSuffix
         );
     // Create index
-    final File compressedIndexFile = File.createTempFile("druid", "index.zip");
+    final File compressedIndexFile = Files.createTempFile("druid", "index.zip").toFile();
     long indexSize = CompressionUtils.zip(indexFilesDir, compressedIndexFile);
     log.info("Wrote compressed file [%s] to [%s]", compressedIndexFile.getAbsolutePath(), key);
 

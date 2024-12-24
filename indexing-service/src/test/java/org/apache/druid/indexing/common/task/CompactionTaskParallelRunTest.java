@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import java.nio.file.Files;
 import org.apache.druid.client.indexing.ClientCompactionTaskGranularitySpec;
 import org.apache.druid.client.indexing.ClientCompactionTaskTransformSpec;
 import org.apache.druid.data.input.InputSplit;
@@ -135,7 +136,7 @@ public class CompactionTaskParallelRunTest extends AbstractParallelIndexSupervis
     getObjectMapper().registerSubtypes(CompactionTask.CompactionTuningConfig.class, DruidInputSource.class);
 
     inputDir = temporaryFolder.newFolder();
-    final File tmpFile = File.createTempFile("druid", "index", inputDir);
+    final File tmpFile = Files.createTempFile(inputDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T00:00:10Z,a,1\n");

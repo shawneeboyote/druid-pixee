@@ -21,6 +21,7 @@ package org.apache.druid.segment;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import java.nio.file.Files;
 import org.apache.druid.collections.spatial.search.RadiusBound;
 import org.apache.druid.collections.spatial.search.RectangularBound;
 import org.apache.druid.data.input.MapBasedInputRow;
@@ -256,7 +257,7 @@ public class IndexMergerV9WithSpatialIndexTest extends InitializedNullHandlingTe
       throws IOException
   {
     IncrementalIndex theIndex = makeIncrementalIndex();
-    File tmpFile = File.createTempFile("billy", "yay");
+    File tmpFile = Files.createTempFile("billy", "yay").toFile();
     tmpFile.delete();
     FileUtils.mkdirp(tmpFile);
 
@@ -476,7 +477,7 @@ public class IndexMergerV9WithSpatialIndexTest extends InitializedNullHandlingTe
       }
 
 
-      File tmpFile = File.createTempFile("yay", "who");
+      File tmpFile = Files.createTempFile("yay", "who").toFile();
       tmpFile.delete();
 
       File firstFile = new File(tmpFile, "first");

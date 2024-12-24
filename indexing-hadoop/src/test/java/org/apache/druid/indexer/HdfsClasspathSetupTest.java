@@ -72,7 +72,7 @@ public class HdfsClasspathSetupTest
   @BeforeClass
   public static void setupStatic() throws IOException
   {
-    hdfsTmpDir = File.createTempFile("hdfsClasspathSetupTest", "dir");
+    hdfsTmpDir = Files.createTempFile("hdfsClasspathSetupTest", "dir").toFile();
     if (!hdfsTmpDir.delete()) {
       throw new IOE("Unable to delete hdfsTmpDir [%s]", hdfsTmpDir.getAbsolutePath());
     }

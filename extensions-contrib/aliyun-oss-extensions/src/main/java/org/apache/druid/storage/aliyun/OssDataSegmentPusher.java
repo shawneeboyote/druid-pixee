@@ -24,6 +24,7 @@ import com.aliyun.oss.OSSException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.emitter.EmittingLogger;
 import org.apache.druid.segment.SegmentUtils;
@@ -86,7 +87,7 @@ public class OssDataSegmentPusher implements DataSegmentPusher
     final String path = OssUtils.constructSegmentPath(config.getPrefix(), storageDirSuffix);
     log.debug("Copying segment[%s] to OSS at location[%s]", inSegment.getId(), path);
 
-    final File zipOutFile = File.createTempFile("druid", "index.zip");
+    final File zipOutFile = Files.createTempFile("druid", "index.zip").toFile();
     final long indexSize = CompressionUtils.zip(indexFilesDir, zipOutFile);
 
     final DataSegment outSegment = inSegment.withSize(indexSize)

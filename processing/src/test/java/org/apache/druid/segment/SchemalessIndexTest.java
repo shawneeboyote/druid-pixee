@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import java.nio.file.Files;
 import org.apache.druid.data.input.MapBasedInputRow;
 import org.apache.druid.jackson.DefaultObjectMapper;
 import org.apache.druid.java.util.common.DateTimes;
@@ -188,7 +189,7 @@ public class SchemalessIndexTest
         IncrementalIndex top = makeIncrementalIndex("druid.sample.json.top", METRIC_AGGS);
         IncrementalIndex bottom = makeIncrementalIndex("druid.sample.json.bottom", METRIC_AGGS);
 
-        File tmpFile = File.createTempFile("yay", "who");
+        File tmpFile = Files.createTempFile("yay", "who").toFile();
         tmpFile.delete();
 
         File topFile = new File(tmpFile, "top");
@@ -245,7 +246,7 @@ public class SchemalessIndexTest
       }
 
       try {
-        File tmpFile = File.createTempFile("yay", "who");
+        File tmpFile = Files.createTempFile("yay", "who").toFile();
         tmpFile.delete();
 
         File mergedFile = new File(tmpFile, "merged");
@@ -283,7 +284,7 @@ public class SchemalessIndexTest
       }
 
       try {
-        File tmpFile = File.createTempFile("yay", "who");
+        File tmpFile = Files.createTempFile("yay", "who").toFile();
         tmpFile.delete();
 
         File mergedFile = new File(tmpFile, "merged");
@@ -370,7 +371,7 @@ public class SchemalessIndexTest
               new MapBasedInputRow(timestamp, dims, event)
           );
 
-          File tmpFile = File.createTempFile("billy", "yay");
+          File tmpFile = Files.createTempFile("billy", "yay").toFile();
           tmpFile.delete();
           FileUtils.mkdirp(tmpFile);
           tmpFile.deleteOnExit();
@@ -450,7 +451,7 @@ public class SchemalessIndexTest
   private QueryableIndex makeMergedMMappedIndex(Iterable<Pair<String, AggregatorFactory[]>> files)
   {
     try {
-      File tmpFile = File.createTempFile("yay", "who");
+      File tmpFile = Files.createTempFile("yay", "who").toFile();
       tmpFile.delete();
       File mergedFile = new File(tmpFile, "merged");
       FileUtils.mkdirp(mergedFile);

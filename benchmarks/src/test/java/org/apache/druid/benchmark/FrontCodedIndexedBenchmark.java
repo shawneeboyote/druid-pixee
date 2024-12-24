@@ -20,6 +20,7 @@
 package org.apache.druid.benchmark;
 
 import com.google.common.base.Preconditions;
+import java.nio.file.Files;
 import org.apache.druid.benchmark.compression.EncodingSizeProfiler;
 import org.apache.druid.common.config.NullHandling;
 import org.apache.druid.java.util.common.FileUtils;
@@ -160,13 +161,13 @@ public class FrontCodedIndexedBenchmark
       frontCodedIndexedWriterIncrementalBuckets.write(StringUtils.toUtf8Nullable(next));
     }
     smooshDirFrontCoded = FileUtils.createTempDir();
-    fileFrontCoded = File.createTempFile("frontCodedIndexedBenchmark", "meta");
+    fileFrontCoded = Files.createTempFile("frontCodedIndexedBenchmark", "meta").toFile();
 
     smooshDirGeneric = FileUtils.createTempDir();
-    fileGeneric = File.createTempFile("genericIndexedBenchmark", "meta");
+    fileGeneric = Files.createTempFile("genericIndexedBenchmark", "meta").toFile();
 
     smooshDirFrontCodedIncrementalBuckets = FileUtils.createTempDir();
-    fileFrontCodedIncrementalBuckets = File.createTempFile("frontCodedIndexedBenchmarkv1Buckets", "meta");
+    fileFrontCodedIncrementalBuckets = Files.createTempFile("frontCodedIndexedBenchmarkv1Buckets", "meta").toFile();
 
     EncodingSizeProfiler.encodedSize = (int) ("generic".equals(indexType)
                                               ? genericIndexedWriter.getSerializedSize()

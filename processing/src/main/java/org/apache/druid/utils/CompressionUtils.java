@@ -27,6 +27,7 @@ import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import java.nio.file.Files;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorInputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
@@ -249,7 +250,7 @@ public class CompressionUtils
         throw Throwables.propagate(e);
       }
     } else {
-      final File tmpFile = File.createTempFile("compressionUtilZipCache", Format.ZIP.getSuffix());
+      final File tmpFile = Files.createTempFile("compressionUtilZipCache", Format.ZIP.getSuffix()).toFile();
       try {
         FileUtils.retryCopy(
             byteSource,

@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.microsoft.azure.storage.StorageException;
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.logger.Logger;
 import org.apache.druid.segment.SegmentUtils;
@@ -139,7 +140,7 @@ public class AzureDataSegmentPusher implements DataSegmentPusher
     File zipOutFile = null;
 
     try {
-      final File outFile = zipOutFile = File.createTempFile("index", ".zip");
+      final File outFile = zipOutFile = Files.createTempFile("index", ".zip").toFile();
       final long size = CompressionUtils.zip(indexFilesDir, zipOutFile);
 
       return AzureUtils.retryAzureOperation(

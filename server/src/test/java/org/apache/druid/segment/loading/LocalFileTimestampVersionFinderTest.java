@@ -19,6 +19,7 @@
 
 package org.apache.druid.segment.loading;
 
+import java.nio.file.Files;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,10 +48,10 @@ public class LocalFileTimestampVersionFinderTest
   @Test
   public void testSimpleLatestVersion() throws IOException, InterruptedException
   {
-    File oldFile = File.createTempFile("old", ".txt", tmpDir);
+    File oldFile = Files.createTempFile(tmpDir.toPath(), "old", ".txt").toFile();
     oldFile.createNewFile();
     Thread.sleep(1_000); // In order to roll over to the next unix second
-    File newFile = File.createTempFile("new", ".txt", tmpDir);
+    File newFile = Files.createTempFile(tmpDir.toPath(), "new", ".txt").toFile();
     newFile.createNewFile();
     Assert.assertTrue(oldFile.exists());
     Assert.assertTrue(newFile.exists());
@@ -65,7 +66,7 @@ public class LocalFileTimestampVersionFinderTest
   @Test
   public void testSimpleOneFileLatestVersion() throws IOException
   {
-    File oldFile = File.createTempFile("old", ".txt", tmpDir);
+    File oldFile = Files.createTempFile(tmpDir.toPath(), "old", ".txt").toFile();
     Assert.assertTrue(oldFile.exists());
     Assert.assertEquals(
         oldFile.getAbsolutePath(),
@@ -76,7 +77,7 @@ public class LocalFileTimestampVersionFinderTest
   @Test
   public void testSimpleOneFileLatestVersionNullMatcher() throws IOException
   {
-    File oldFile = File.createTempFile("old", ".txt", tmpDir);
+    File oldFile = Files.createTempFile(tmpDir.toPath(), "old", ".txt").toFile();
     Assert.assertTrue(oldFile.exists());
     Assert.assertEquals(
         oldFile.getAbsolutePath(),
@@ -87,7 +88,7 @@ public class LocalFileTimestampVersionFinderTest
   @Test
   public void testNoLatestVersion() throws IOException
   {
-    File oldFile = File.createTempFile("test", ".txt", tmpDir);
+    File oldFile = Files.createTempFile(tmpDir.toPath(), "test", ".txt").toFile();
     oldFile.delete();
     URI uri = oldFile.toURI();
     Assert.assertNull(
@@ -98,10 +99,10 @@ public class LocalFileTimestampVersionFinderTest
   @Test
   public void testLatestVersionInDir() throws IOException, InterruptedException
   {
-    File oldFile = File.createTempFile("old", ".txt", tmpDir);
+    File oldFile = Files.createTempFile(tmpDir.toPath(), "old", ".txt").toFile();
     oldFile.createNewFile();
     Thread.sleep(1_000); // In order to roll over to the next unix second
-    File newFile = File.createTempFile("new", ".txt", tmpDir);
+    File newFile = Files.createTempFile(tmpDir.toPath(), "new", ".txt").toFile();
     newFile.createNewFile();
     Assert.assertTrue(oldFile.exists());
     Assert.assertTrue(newFile.exists());

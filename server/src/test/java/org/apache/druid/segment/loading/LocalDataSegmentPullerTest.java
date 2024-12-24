@@ -20,6 +20,7 @@
 package org.apache.druid.segment.loading;
 
 import com.google.common.io.Files;
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.FileUtils;
 import org.apache.druid.utils.CompressionUtils;
 import org.junit.After;
@@ -79,7 +80,7 @@ public class LocalDataSegmentPullerTest
   @Test
   public void simpleGZTest() throws IOException, SegmentLoadingException
   {
-    File zipFile = File.createTempFile("gztest", ".gz");
+    File zipFile = Files.createTempFile("gztest", ".gz").toFile();
     File unZipFile = new File(
         tmpDir,
         Files.getNameWithoutExtension(
@@ -105,7 +106,7 @@ public class LocalDataSegmentPullerTest
   public void simpleDirectoryTest() throws IOException, SegmentLoadingException
   {
     File srcDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("test", "file", srcDir);
+    File tmpFile = Files.createTempFile(srcDir.toPath(), "test", "file").toFile();
     File expectedOutput = new File(tmpDir, Files.getNameWithoutExtension(tmpFile.getAbsolutePath()));
     Assert.assertFalse(expectedOutput.exists());
     puller.getSegmentFiles(srcDir, tmpDir);

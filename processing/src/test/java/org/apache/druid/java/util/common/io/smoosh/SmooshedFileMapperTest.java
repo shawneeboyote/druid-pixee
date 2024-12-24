@@ -21,6 +21,7 @@ package org.apache.druid.java.util.common.io.smoosh;
 
 import com.google.common.io.Files;
 import com.google.common.primitives.Ints;
+import java.nio.file.Files;
 import junit.framework.Assert;
 import org.apache.druid.java.util.common.BufferUtils;
 import org.apache.druid.java.util.common.ISE;
@@ -66,7 +67,7 @@ public class SmooshedFileMapperTest
       final SmooshedWriter writer = smoosher.addWithSmooshedWriter(StringUtils.format("%d", 19), 4);
 
       for (int i = 0; i < 19; ++i) {
-        File tmpFile = File.createTempFile(StringUtils.format("smoosh-%s", i), ".bin");
+        File tmpFile = Files.createTempFile(StringUtils.format("smoosh-%s", i), ".bin").toFile();
         Files.write(Ints.toByteArray(i), tmpFile);
         smoosher.add(StringUtils.format("%d", i), tmpFile);
         if (i == 10) {
@@ -102,7 +103,7 @@ public class SmooshedFileMapperTest
       writer.write(ByteBuffer.wrap(Ints.toByteArray(19)));
 
       for (int i = 0; i < 19; ++i) {
-        File tmpFile = File.createTempFile(StringUtils.format("smoosh-%s", i), ".bin");
+        File tmpFile = Files.createTempFile(StringUtils.format("smoosh-%s", i), ".bin").toFile();
         Files.write(Ints.toByteArray(i), tmpFile);
         smoosher.add(StringUtils.format("%d", i), tmpFile);
         tmpFile.delete();
@@ -123,7 +124,7 @@ public class SmooshedFileMapperTest
       writer.write(ByteBuffer.wrap(Ints.toByteArray(19)));
 
       for (int i = 0; i < 19; ++i) {
-        File tmpFile = File.createTempFile(StringUtils.format("smoosh-%s", i), ".bin");
+        File tmpFile = Files.createTempFile(StringUtils.format("smoosh-%s", i), ".bin").toFile();
         Files.write(Ints.toByteArray(i), tmpFile);
         smoosher.add(StringUtils.format("%s%d", prefix, i), tmpFile);
         tmpFile.delete();

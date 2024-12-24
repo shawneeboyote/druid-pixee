@@ -281,7 +281,7 @@ public class AppenderatorDriverRealtimeIndexTaskTest extends InitializedNullHand
     derbyConnector.createPendingSegmentsTable();
 
     baseDir = tempFolder.newFolder();
-    reportsFile = File.createTempFile("KafkaIndexTaskTestReports-" + System.currentTimeMillis(), "json");
+    reportsFile = Files.createTempFile("KafkaIndexTaskTestReports-" + System.currentTimeMillis(), "json").toFile();
     makeToolboxFactory(baseDir);
   }
 

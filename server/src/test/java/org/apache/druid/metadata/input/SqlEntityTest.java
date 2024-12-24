@@ -21,6 +21,7 @@ package org.apache.druid.metadata.input;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.file.Files;
 import org.apache.commons.io.IOUtils;
 import org.apache.druid.data.input.InputEntity;
 import org.apache.druid.data.input.InputRow;
@@ -65,7 +66,7 @@ public class SqlEntityTest
     derbyConnector = derbyConnectorRule.getConnector();
     SqlTestUtils testUtils = new SqlTestUtils(derbyConnector);
     final InputRow expectedRow = testUtils.createTableWithRows(TABLE_NAME_1, 1).get(0);
-    File tmpFile = File.createTempFile("testQueryResults", "");
+    File tmpFile = Files.createTempFile("testQueryResults", "").toFile();
     InputEntity.CleanableFile queryResult = SqlEntity.openCleanableFile(
         VALID_SQL,
         testUtils.getDerbyFirehoseConnector(),
@@ -88,7 +89,7 @@ public class SqlEntityTest
     derbyConnector = derbyConnectorRule.getConnector();
     SqlTestUtils testUtils = new SqlTestUtils(derbyConnector);
     testUtils.createTableWithRows(TABLE_NAME_1, 1);
-    File tmpFile = File.createTempFile("testQueryResults", "");
+    File tmpFile = Files.createTempFile("testQueryResults", "").toFile();
     Assert.assertTrue(tmpFile.exists());
 
     Assert.assertThrows(

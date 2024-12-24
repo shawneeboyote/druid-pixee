@@ -21,6 +21,7 @@ package org.apache.druid.benchmark.indexing;
 
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.file.Files;
 import org.apache.druid.common.config.NullHandling;
 import org.apache.druid.jackson.DefaultObjectMapper;
 import org.apache.druid.java.util.common.FileUtils;
@@ -153,7 +154,7 @@ public class IndexMergeBenchmark
   @OutputTimeUnit(TimeUnit.MICROSECONDS)
   public void mergeV9(Blackhole blackhole) throws Exception
   {
-    File tmpFile = File.createTempFile("IndexMergeBenchmark-MERGEDFILE-V9-" + System.currentTimeMillis(), ".TEMPFILE");
+    File tmpFile = Files.createTempFile("IndexMergeBenchmark-MERGEDFILE-V9-" + System.currentTimeMillis(), ".TEMPFILE").toFile();
     tmpFile.delete();
     FileUtils.mkdirp(tmpFile);
     try {
