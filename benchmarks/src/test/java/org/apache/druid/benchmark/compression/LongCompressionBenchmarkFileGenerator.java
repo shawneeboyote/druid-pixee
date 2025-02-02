@@ -20,6 +20,7 @@
 package org.apache.druid.benchmark.compression;
 
 import com.google.common.collect.ImmutableList;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.common.config.NullHandling;
 import org.apache.druid.java.util.common.logger.Logger;
 import org.apache.druid.segment.column.ValueType;
@@ -163,7 +164,7 @@ public class LongCompressionBenchmarkFileGenerator
           ) {
             writer.open();
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
               writer.add(Long.parseLong(line));
             }
             writer.writeTo(output, null);

@@ -21,6 +21,7 @@ package org.apache.druid.testsEx.indexer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.commons.io.IOUtils;
 import org.apache.druid.guice.annotations.Json;
 import org.apache.druid.guice.annotations.Smile;
@@ -174,7 +175,7 @@ public abstract class AbstractIndexerTest
     ) {
       String resource;
 
-      while ((resource = br.readLine()) != null) {
+      while ((resource = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         resources.add(resource);
       }
     }
