@@ -31,6 +31,7 @@ import com.google.inject.Module;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.client.CachingClusteredClient;
 import org.apache.druid.client.DruidServer;
 import org.apache.druid.client.ImmutableDruidServer;
@@ -120,7 +121,7 @@ public class MovingAverageQueryTest extends InitializedNullHandlingTest
         new InputStreamReader(MovingAverageQueryTest.class.getResourceAsStream("/queryTests"), StandardCharsets.UTF_8));
     List<String[]> tests = new ArrayList<>();
 
-    for (String line = testReader.readLine(); line != null; line = testReader.readLine()) {
+    for (String line = BoundedLineReader.readLine(testReader, 5_000_000); line != null; line = BoundedLineReader.readLine(testReader, 5_000_000)) {
       tests.add(new String[]{line});
     }
 

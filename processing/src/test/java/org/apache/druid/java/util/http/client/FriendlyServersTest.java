@@ -20,6 +20,7 @@
 package org.apache.druid.java.util.http.client;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.lifecycle.Lifecycle;
 import org.apache.druid.java.util.http.client.response.StatusResponseHandler;
@@ -79,7 +80,7 @@ public class FriendlyServersTest
                   );
                   OutputStream out = clientSocket.getOutputStream()
               ) {
-                while (!in.readLine().equals("")) {
+                while (!BoundedLineReader.readLine(in, 5_000_000).equals("")) {
                   // skip lines
                 }
                 out.write("HTTP/1.1 200 OK\r\nContent-Length: 6\r\n\r\nhello!".getBytes(StandardCharsets.UTF_8));
@@ -138,13 +139,13 @@ public class FriendlyServersTest
               ) {
                 StringBuilder request = new StringBuilder();
                 String line;
-                while (!"".equals((line = in.readLine()))) {
+                while (!"".equals((line = BoundedLineReader.readLine(in, 5_000_000)))) {
                   request.append(line).append("\r\n");
                 }
                 requestContent.set(request.toString());
                 out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes(StandardCharsets.UTF_8));
 
-                while (!in.readLine().equals("")) {
+                while (!BoundedLineReader.readLine(in, 5_000_000).equals("")) {
                   // skip lines
                 }
                 out.write("HTTP/1.1 200 OK\r\nContent-Length: 6\r\n\r\nhello!".getBytes(StandardCharsets.UTF_8));
@@ -212,7 +213,7 @@ public class FriendlyServersTest
               ) {
                 // Read headers
                 String header;
-                while (!(header = in.readLine()).equals("")) {
+                while (!(header = BoundedLineReader.readLine(in, 5_000_000)).equals("")) {
                   if ("Accept-Encoding: identity".equals(header)) {
                     foundAcceptEncoding.set(true);
                   }

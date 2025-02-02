@@ -20,6 +20,7 @@
 package org.apache.druid.benchmark.compression;
 
 import com.google.common.collect.Iterables;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.jackson.DefaultObjectMapper;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.segment.IndexIO;
@@ -76,7 +77,7 @@ public class ColumnarLongsEncodeDataFromSegmentBenchmark extends BaseColumnarLon
     List<Long> values = new ArrayList<>();
     try (BufferedReader br = Files.newBufferedReader(dataFile.toPath(), StandardCharsets.UTF_8)) {
       String line;
-      while ((line = br.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         long value = Long.parseLong(line);
         if (value < minValue) {
           minValue = value;
