@@ -20,6 +20,7 @@
 package org.apache.druid.server.http;
 
 import com.google.inject.Inject;
+import io.github.pixee.security.Newlines;
 import org.apache.druid.java.util.common.logger.Logger;
 
 import javax.servlet.Filter;
@@ -82,7 +83,7 @@ public class RedirectFilter implements Filter
       }
 
       response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
-      response.setHeader("Location", url.toString());
+      response.setHeader("Location", Newlines.stripAll(url.toString()));
     }
   }
 
