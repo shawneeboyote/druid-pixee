@@ -36,6 +36,8 @@ import com.google.common.util.concurrent.ListenableScheduledFuture;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.audit.AuditInfo;
 import org.apache.druid.common.config.JacksonConfigManager;
 import org.apache.druid.concurrent.LifecycleLock;
@@ -728,22 +730,12 @@ public class LookupCoordinatorManager
 
   static URL getLookupsURL(HostAndPortWithScheme druidNode) throws MalformedURLException
   {
-    return new URL(
-        druidNode.getScheme(),
-        druidNode.getHostText(),
-        druidNode.getPortOrDefault(-1),
-        LOOKUP_BASE_REQUEST_PATH
-    );
+    return Urls.create(druidNode.getScheme(), druidNode.getHostText(), druidNode.getPortOrDefault(-1), LOOKUP_BASE_REQUEST_PATH, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
   }
 
   static URL getLookupsUpdateURL(HostAndPortWithScheme druidNode) throws MalformedURLException
   {
-    return new URL(
-        druidNode.getScheme(),
-        druidNode.getHostText(),
-        druidNode.getPortOrDefault(-1),
-        LOOKUP_UPDATE_REQUEST_PATH
-    );
+    return Urls.create(druidNode.getScheme(), druidNode.getHostText(), druidNode.getPortOrDefault(-1), LOOKUP_UPDATE_REQUEST_PATH, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
   }
 
   private static boolean httpStatusIsSuccess(int statusCode)

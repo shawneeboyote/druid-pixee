@@ -22,6 +22,8 @@ package org.apache.druid.tests.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.guice.annotations.Client;
 import org.apache.druid.guice.http.DruidHttpClientConfig;
 import org.apache.druid.https.SSLClientConfig;
@@ -494,7 +496,7 @@ public class ITTLSTest
   )
   {
     try {
-      Request request = new Request(method, new URL(url));
+      Request request = new Request(method, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
       if (content != null) {
         request.setContent(MediaType.APPLICATION_JSON, content);
       }

@@ -24,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.os72.protobuf.dynamic.DynamicSchema;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Descriptors;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.parsers.ParseException;
 
 import java.io.IOException;
@@ -63,7 +65,7 @@ public class FileBasedProtobufBytesDecoder extends DescriptorBasedProtobufBytesD
     if (fin == null) {
       URL url;
       try {
-        url = new URL(descriptorFilePath);
+        url = Urls.create(descriptorFilePath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
       }
       catch (MalformedURLException e) {
         throw new ParseException(

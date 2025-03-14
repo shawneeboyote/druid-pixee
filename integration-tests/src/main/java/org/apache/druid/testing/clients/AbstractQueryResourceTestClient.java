@@ -23,6 +23,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.smile.SmileMediaTypes;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.guice.annotations.Smile;
 import org.apache.druid.java.util.common.IAE;
 import org.apache.druid.java.util.common.ISE;
@@ -146,7 +148,7 @@ public abstract class AbstractQueryResourceTestClient<QueryType>
     try {
       String expectedResponseType = this.contentTypeHeader;
 
-      Request request = new Request(HttpMethod.POST, new URL(url));
+      Request request = new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
       request.setContent(this.contentTypeHeader, encoderDecoderMap.get(this.contentTypeHeader).encode(query));
       if (this.acceptHeader != null) {
         expectedResponseType = this.acceptHeader;
@@ -206,7 +208,7 @@ public abstract class AbstractQueryResourceTestClient<QueryType>
   public Future<StatusResponseHolder> queryAsync(String url, QueryType query)
   {
     try {
-      Request request = new Request(HttpMethod.POST, new URL(url));
+      Request request = new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
       request.setContent(MediaType.APPLICATION_JSON, encoderDecoderMap.get(MediaType.APPLICATION_JSON).encode(query));
       return httpClient.go(
           request,
@@ -221,7 +223,7 @@ public abstract class AbstractQueryResourceTestClient<QueryType>
   public HttpResponseStatus cancelQuery(String url, long timeoutMs)
   {
     try {
-      Request request = new Request(HttpMethod.DELETE, new URL(url));
+      Request request = new Request(HttpMethod.DELETE, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
       Future<StatusResponseHolder> future = httpClient.go(
           request,
           StatusResponseHandler.getInstance()
