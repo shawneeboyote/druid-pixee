@@ -35,6 +35,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.inject.name.Named;
+import java.nio.file.Files;
 import org.apache.druid.common.aws.AWSCredentialsConfig;
 import org.apache.druid.data.input.impl.ByteEntity;
 import org.apache.druid.data.input.impl.DimensionsSpec;
@@ -216,7 +217,7 @@ public class KinesisIndexTaskTest extends SeekableStreamIndexTaskTestBase
     maxParseExceptions = null;
     maxSavedParseExceptions = null;
     doHandoff = true;
-    reportsFile = File.createTempFile("KinesisIndexTaskTestReports-" + System.currentTimeMillis(), "json");
+    reportsFile = Files.createTempFile("KinesisIndexTaskTestReports-" + System.currentTimeMillis(), "json").toFile();
     maxRecordsPerPoll = 1;
 
     recordSupplier = mock(KinesisRecordSupplier.class);

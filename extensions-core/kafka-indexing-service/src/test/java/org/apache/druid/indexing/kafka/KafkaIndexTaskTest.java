@@ -35,6 +35,7 @@ import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
+import java.nio.file.Files;
 import org.apache.curator.test.TestingCluster;
 import org.apache.druid.data.input.InputEntity;
 import org.apache.druid.data.input.InputEntityReader;
@@ -305,7 +306,7 @@ public class KafkaIndexTaskTest extends SeekableStreamIndexTaskTestBase
     doHandoff = true;
     topic = getTopicName();
     records = generateRecords(topic);
-    reportsFile = File.createTempFile("KafkaIndexTaskTestReports-" + System.currentTimeMillis(), "json");
+    reportsFile = Files.createTempFile("KafkaIndexTaskTestReports-" + System.currentTimeMillis(), "json").toFile();
     makeToolboxFactory();
   }
 

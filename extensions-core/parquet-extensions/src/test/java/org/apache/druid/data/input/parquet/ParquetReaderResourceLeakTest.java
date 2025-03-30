@@ -20,6 +20,7 @@
 package org.apache.druid.data.input.parquet;
 
 import com.google.common.collect.ImmutableList;
+import java.nio.file.Files;
 import org.apache.druid.data.input.ColumnsFilter;
 import org.apache.druid.data.input.InputEntityReader;
 import org.apache.druid.data.input.InputRow;
@@ -82,7 +83,7 @@ public class ParquetReaderResourceLeakTest extends BaseParquetReaderTest
     {
       // Copied from InputEntity
       try {
-        final File tempFile = File.createTempFile("druid-input-entity", ".tmp", temporaryDirectory);
+        final File tempFile = Files.createTempFile(temporaryDirectory.toPath(), "druid-input-entity", ".tmp").toFile();
         FileUtils.copyLarge(
             this::open,
             tempFile,

@@ -27,6 +27,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import java.nio.file.Files;
 import org.apache.druid.client.coordinator.CoordinatorClient;
 import org.apache.druid.client.coordinator.NoopCoordinatorClient;
 import org.apache.druid.client.indexing.ClientCompactionTaskGranularitySpec;
@@ -529,7 +530,7 @@ public class CompactionTaskRunTest extends IngestionTestBase
         .build();
 
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       writer.write("2014-01-01T03:00:10Z,a,1\n");
@@ -1878,7 +1879,7 @@ public class CompactionTaskRunTest extends IngestionTestBase
   ) throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       for (String testRow : TEST_ROWS) {
@@ -1918,7 +1919,7 @@ public class CompactionTaskRunTest extends IngestionTestBase
   ) throws Exception
   {
     File tmpDir = temporaryFolder.newFolder();
-    File tmpFile = File.createTempFile("druid", "index", tmpDir);
+    File tmpFile = Files.createTempFile(tmpDir.toPath(), "druid", "index").toFile();
 
     try (BufferedWriter writer = Files.newWriter(tmpFile, StandardCharsets.UTF_8)) {
       for (String testRow : rows) {

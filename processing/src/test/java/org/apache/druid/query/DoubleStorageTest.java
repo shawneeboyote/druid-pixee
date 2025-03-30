@@ -21,6 +21,7 @@ package org.apache.druid.query;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.nio.file.Files;
 import org.apache.druid.data.input.impl.DimensionsSpec;
 import org.apache.druid.data.input.impl.InputRowParser;
 import org.apache.druid.data.input.impl.JSONParseSpec;
@@ -356,7 +357,7 @@ public class DoubleStorageTest extends InitializedNullHandlingTest
     } else {
       System.setProperty(ColumnHolder.DOUBLE_STORAGE_TYPE_PROPERTY, oldValue);
     }
-    File someTmpFile = File.createTempFile("billy", "yay");
+    File someTmpFile = Files.createTempFile("billy", "yay").toFile();
     someTmpFile.delete();
     FileUtils.mkdirp(someTmpFile);
     INDEX_MERGER_V9.persist(index, someTmpFile, IndexSpec.DEFAULT, null);

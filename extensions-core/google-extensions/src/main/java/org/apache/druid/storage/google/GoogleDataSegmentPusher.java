@@ -25,6 +25,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import java.nio.file.Files;
 import org.apache.druid.java.util.common.RE;
 import org.apache.druid.java.util.common.RetryUtils;
 import org.apache.druid.java.util.common.StringUtils;
@@ -115,7 +116,7 @@ public class GoogleDataSegmentPusher implements DataSegmentPusher
     File indexFile = null;
 
     try {
-      indexFile = File.createTempFile("index", ".zip");
+      indexFile = Files.createTempFile("index", ".zip").toFile();
       final long indexSize = CompressionUtils.zip(indexFilesDir, indexFile);
       final String indexPath = buildPath(storageDirSuffix + "/" + "index.zip");
 
