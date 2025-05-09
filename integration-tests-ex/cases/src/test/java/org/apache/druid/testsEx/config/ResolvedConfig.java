@@ -21,6 +21,7 @@ package org.apache.druid.testsEx.config;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.curator.CuratorConfig;
 import org.apache.druid.java.util.common.IAE;
 import org.apache.druid.java.util.common.ISE;
@@ -319,7 +320,7 @@ public class ResolvedConfig
     try (BufferedReader in = new BufferedReader(
         new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
       String line;
-      while ((line = in.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(in, 5_000_000)) != null) {
         if (Strings.isNullOrEmpty(line) || line.startsWith("#")) {
           continue;
         }

@@ -30,6 +30,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.opencsv.CSVParser;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.guice.DruidProcessingModule;
 import org.apache.druid.guice.JsonConfigProvider;
 import org.apache.druid.guice.QueryRunnerFactoryModule;
@@ -264,7 +265,7 @@ public class ExportMetadata extends GuiceRunnable
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outFile), StandardCharsets.UTF_8)
     ) {
       String line;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         String[] parsed = PARSER.parseLine(line);
 
         String newLine = parsed[0] + "," //dataSource
@@ -294,7 +295,7 @@ public class ExportMetadata extends GuiceRunnable
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outFile), StandardCharsets.UTF_8)
     ) {
       String line;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         String[] parsed = PARSER.parseLine(line);
 
         String newLine = parsed[0] + "," //id
@@ -324,7 +325,7 @@ public class ExportMetadata extends GuiceRunnable
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outFile), StandardCharsets.UTF_8)
     ) {
       String line;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         String[] parsed = PARSER.parseLine(line);
 
         String newLine = parsed[0] + "," //name
@@ -352,7 +353,7 @@ public class ExportMetadata extends GuiceRunnable
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outFile), StandardCharsets.UTF_8)
     ) {
       String line;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         String[] parsed = PARSER.parseLine(line);
 
         String newLine = parsed[0] + "," //id
@@ -383,7 +384,7 @@ public class ExportMetadata extends GuiceRunnable
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outFile), StandardCharsets.UTF_8)
     ) {
       String line;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         String[] parsed = PARSER.parseLine(line);
         StringBuilder newLineBuilder = new StringBuilder();
         newLineBuilder.append(parsed[0]).append(","); //id

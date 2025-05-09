@@ -19,6 +19,7 @@
 
 package org.apache.druid.tests.indexer;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.curator.discovery.ServerDiscoverySelector;
 import org.apache.druid.java.util.common.DateTimes;
 import org.apache.druid.java.util.common.ISE;
@@ -96,7 +97,7 @@ public class ITAppenderatorDriverRealtimeIndexTaskTest extends AbstractITRealtim
       dtFirst = dt;
       dtLast = dt;
       String line;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         if (i == 15) { // for the 15th line, use a time before the window
           dt = dt.minusMinutes(10);
           dtFirst = dt; // oldest timestamp

@@ -22,6 +22,7 @@ package org.apache.druid.testing.clients;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.smile.SmileMediaTypes;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.jackson.JacksonUtils;
@@ -156,7 +157,7 @@ public class EventReceiverFirehoseTestClient
       // sends events one by one using both jsonMapper and smileMapper.
       int totalEventsPosted = 0;
       int expectedEventsPosted = 0;
-      while ((s = reader.readLine()) != null) {
+      while ((s = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         events.add(this.jsonMapper.readValue(s, JacksonUtils.TYPE_REFERENCE_MAP_STRING_OBJECT));
         ObjectMapper mapper = (totalEventsPosted % 2 == 0) ? jsonMapper : smileMapper;
         String mediaType = (totalEventsPosted % 2 == 0)
