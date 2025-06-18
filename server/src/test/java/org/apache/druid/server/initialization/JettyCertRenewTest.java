@@ -26,6 +26,8 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.multibindings.Multibinder;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.io.IOUtils;
 import org.apache.druid.guice.GuiceInjectors;
 import org.apache.druid.guice.Jerseys;
@@ -340,7 +342,7 @@ public class JettyCertRenewTest extends BaseJettyTest
 
   private Certificate[] getCertificates() throws Exception
   {
-    URL url = new URL("https://localhost:" + tlsPort + "/default/");
+    URL url = Urls.create("https://localhost:" + tlsPort + "/default/", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
     SSLContext sslCtx = SSLContext.getInstance("TLS");
     sslCtx.init(null, new TrustManager[]{new AcceptAllForTestX509TrustManager()}, null);
@@ -377,7 +379,7 @@ public class JettyCertRenewTest extends BaseJettyTest
     try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out)) {
       gzipOutputStream.write(text.getBytes(Charset.defaultCharset()));
     }
-    Request request = new Request(HttpMethod.GET, new URL("https://localhost:" + tlsPort + "/default/"));
+    Request request = new Request(HttpMethod.GET, Urls.create("https://localhost:" + tlsPort + "/default/", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
     request.setHeader("Content-Encoding", "gzip");
     request.setContent(MediaType.TEXT_PLAIN, out.toByteArray());
 

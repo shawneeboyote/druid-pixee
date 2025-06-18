@@ -23,6 +23,8 @@ import com.fasterxml.jackson.jaxrs.smile.SmileMediaTypes;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.RE;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.emitter.EmittingLogger;
@@ -177,12 +179,7 @@ public class RestUpdateSender implements Consumer<byte[]>
   private URL getListenerURL(DruidNode druidNode, String baseUrl)
   {
     try {
-      return new URL(
-          druidNode.getServiceScheme(),
-          druidNode.getHost(),
-          druidNode.getPortToUse(),
-          baseUrl
-      );
+      return Urls.create(druidNode.getServiceScheme(), druidNode.getHost(), druidNode.getPortToUse(), baseUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (MalformedURLException mue) {
       String msg = StringUtils.format(callerName + ": Malformed url for DruidNode [%s] and baseUrl [%s]", druidNode, baseUrl);

@@ -20,6 +20,8 @@
 package org.apache.druid.java.util.http.client.pool;
 
 import com.google.common.base.Preconditions;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.logger.Logger;
 import org.apache.druid.java.util.http.client.HttpClientProxyConfig;
@@ -95,7 +97,7 @@ public class ChannelResourceFactory implements ResourceFactory<String, ChannelFu
     log.debug("Generating: %s", hostname);
     URL url;
     try {
-      url = new URL(hostname);
+      url = Urls.create(hostname, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (MalformedURLException e) {
       throw new RuntimeException(e);

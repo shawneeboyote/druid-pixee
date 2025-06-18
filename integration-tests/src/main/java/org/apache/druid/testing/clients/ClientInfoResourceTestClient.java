@@ -22,6 +22,8 @@ package org.apache.druid.testing.clients;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.http.client.HttpClient;
@@ -70,12 +72,12 @@ public class ClientInfoResourceTestClient
       StatusResponseHolder response = httpClient.go(
           new Request(
               HttpMethod.GET,
-              new URL(StringUtils.format(
+              Urls.create(StringUtils.format(
                   "%s/%s/dimensions?interval=%s",
                   getBrokerURL(),
                   StringUtils.urlEncode(dataSource),
                   interval
-              ))
+              ), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)
           ),
           responseHandler
       ).get();

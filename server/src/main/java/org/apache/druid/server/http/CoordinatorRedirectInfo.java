@@ -21,6 +21,8 @@ package org.apache.druid.server.http;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.server.coordinator.DruidCoordinator;
 
@@ -65,7 +67,7 @@ public class CoordinatorRedirectInfo implements RedirectInfo
         location = StringUtils.format("%s?%s", location, queryString);
       }
 
-      return new URL(location);
+      return Urls.create(location, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (Exception e) {
       throw new RuntimeException(e);

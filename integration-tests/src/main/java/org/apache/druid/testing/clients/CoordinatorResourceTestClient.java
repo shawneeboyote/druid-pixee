@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.RE;
 import org.apache.druid.java.util.common.StringUtils;
@@ -205,7 +207,7 @@ public class CoordinatorResourceTestClient
     Map<String, Integer> status;
     try {
       StatusResponseHolder response = httpClient.go(
-          new Request(HttpMethod.GET, new URL(url)),
+          new Request(HttpMethod.GET, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
           responseHandler
       ).get();
 
@@ -295,7 +297,7 @@ public class CoordinatorResourceTestClient
   {
     String url = StringUtils.format("%slookups/config", getCoordinatorURL());
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.POST, new URL(url)).setContent(
+        new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)).setContent(
             "application/json",
             jsonMapper.writeValueAsBytes(ImmutableMap.of())
         ), responseHandler
@@ -311,7 +313,7 @@ public class CoordinatorResourceTestClient
     }
 
     StatusResponseHolder response2 = httpClient.go(
-        new Request(HttpMethod.POST, new URL(url)).setContent(
+        new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)).setContent(
             "application/json",
             jsonMapper.writeValueAsBytes(
                 jsonMapper.readValue(
@@ -349,7 +351,7 @@ public class CoordinatorResourceTestClient
     Map<String, Map<HostAndPort, LookupsState<LookupExtractorFactoryMapContainer>>> status;
     try {
       StatusResponseHolder response = httpClient.go(
-          new Request(HttpMethod.GET, new URL(url)),
+          new Request(HttpMethod.GET, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
           responseHandler
       ).get();
 
@@ -400,7 +402,7 @@ public class CoordinatorResourceTestClient
   {
     String url = StringUtils.format("%sconfig", getCoordinatorURL());
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.POST, new URL(url)).setContent(
+        new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)).setContent(
             "application/json",
             jsonMapper.writeValueAsBytes(coordinatorDynamicConfig)
         ), responseHandler
@@ -420,7 +422,7 @@ public class CoordinatorResourceTestClient
   {
     String url = StringUtils.format("%srules/%s", getCoordinatorURL(), datasourceName);
     StatusResponseHolder response = httpClient.go(
-        new Request(HttpMethod.POST, new URL(url)).setContent(
+        new Request(HttpMethod.POST, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)).setContent(
             "application/json",
             jsonMapper.writeValueAsBytes(rules)
         ), responseHandler
@@ -455,7 +457,7 @@ public class CoordinatorResourceTestClient
   {
     try {
       StatusResponseHolder response = httpClient.go(
-          new Request(method, new URL(url)),
+          new Request(method, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)),
           responseHandler
       ).get();
       if (!response.getStatus().equals(HttpResponseStatus.OK)) {

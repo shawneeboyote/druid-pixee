@@ -27,6 +27,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.concurrent.LifecycleLock;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.RetryUtils;
@@ -244,7 +246,7 @@ public class ChangeRequestHttpSyncer<T>
       log.debug("Sending sync request to server[%s]", logIdentity);
 
       ListenableFuture<InputStream> syncRequestFuture = httpClient.go(
-          new Request(HttpMethod.GET, new URL(baseServerURL, req))
+          new Request(HttpMethod.GET, Urls.create(baseServerURL, req, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))
               .addHeader(HttpHeaders.Names.ACCEPT, SmileMediaTypes.APPLICATION_JACKSON_SMILE)
               .addHeader(HttpHeaders.Names.CONTENT_TYPE, SmileMediaTypes.APPLICATION_JACKSON_SMILE),
           responseHandler,

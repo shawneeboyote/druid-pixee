@@ -24,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.net.HostAndPort;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.IAE;
 
 import javax.annotation.Nullable;
@@ -141,7 +143,7 @@ public class TaskLocation
     }
 
     // Use URL constructor, not URI, since the path is already encoded.
-    return new URL(scheme, host, portToUse, encodedPathAndQueryString);
+    return Urls.create(scheme, host, portToUse, encodedPathAndQueryString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
   }
 
   @Override

@@ -24,6 +24,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.primitives.Ints;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.druid.concurrent.ConcurrentAwaitableCounter;
 import org.apache.druid.java.util.common.ISE;
@@ -170,7 +172,7 @@ public class HttpPostEmitter implements Flushable, Closeable, Emitter
     this.client = client;
     this.jsonMapper = jsonMapper;
     try {
-      this.url = new URL(config.getRecipientBaseUrl()).toString();
+      this.url = Urls.create(config.getRecipientBaseUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).toString();
     }
     catch (MalformedURLException e) {
       throw new ISE(e, "Bad URL: %s", config.getRecipientBaseUrl());

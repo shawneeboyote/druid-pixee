@@ -21,6 +21,8 @@ package org.apache.druid.emitter.prometheus;
 
 
 import com.google.common.collect.ImmutableMap;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
@@ -114,7 +116,7 @@ public class PrometheusEmitter implements Emitter
   private static URL createURLSneakily(final String urlString)
   {
     try {
-      return new URL(urlString);
+      return Urls.create(urlString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
     catch (MalformedURLException e) {
       throw new RuntimeException(e);

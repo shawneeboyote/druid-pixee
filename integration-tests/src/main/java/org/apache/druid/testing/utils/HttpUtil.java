@@ -19,6 +19,8 @@
 
 package org.apache.druid.testing.utils;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.druid.java.util.common.ISE;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.logger.Logger;
@@ -61,7 +63,7 @@ public class HttpUtil
   )
   {
     try {
-      Request request = new Request(method, new URL(url));
+      Request request = new Request(method, Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
       if (content != null) {
         request.setContent(MediaType.APPLICATION_JSON, content);
       }
