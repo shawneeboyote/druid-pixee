@@ -21,6 +21,7 @@ package org.apache.druid.segment.filter;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import java.nio.file.Files;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.druid.collections.spatial.search.RadiusBound;
 import org.apache.druid.collections.spatial.search.RectangularBound;
@@ -282,7 +283,7 @@ public class SpatialFilterTest extends InitializedNullHandlingTest
   private static QueryableIndex makeQueryableIndex(IndexSpec indexSpec) throws IOException
   {
     IncrementalIndex theIndex = makeIncrementalIndex();
-    File tmpFile = File.createTempFile("billy", "yay");
+    File tmpFile = Files.createTempFile("billy", "yay").toFile();
     tmpFile.delete();
     FileUtils.mkdirp(tmpFile);
     tmpFile.deleteOnExit();
@@ -494,7 +495,7 @@ public class SpatialFilterTest extends InitializedNullHandlingTest
       }
 
 
-      File tmpFile = File.createTempFile("yay", "who");
+      File tmpFile = Files.createTempFile("yay", "who").toFile();
       tmpFile.delete();
 
       File firstFile = new File(tmpFile, "first");

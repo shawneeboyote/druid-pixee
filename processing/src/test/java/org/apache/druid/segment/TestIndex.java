@@ -24,6 +24,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.io.CharSource;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
+import java.nio.file.Files;
 import org.apache.druid.data.input.impl.DelimitedParseSpec;
 import org.apache.druid.data.input.impl.DimensionSchema;
 import org.apache.druid.data.input.impl.DimensionsSpec;
@@ -179,7 +180,7 @@ public class TestIndex
       IncrementalIndex top = makeRealtimeIndex("druid.sample.numeric.tsv.top");
       IncrementalIndex bottom = makeRealtimeIndex("druid.sample.numeric.tsv.bottom");
 
-      File tmpFile = File.createTempFile("yay", "who");
+      File tmpFile = Files.createTempFile("yay", "who").toFile();
       tmpFile.delete();
 
       File topFile = new File(tmpFile, "top");
@@ -390,7 +391,7 @@ public class TestIndex
   public static QueryableIndex persistRealtimeAndLoadMMapped(IncrementalIndex index, IndexSpec indexSpec)
   {
     try {
-      File someTmpFile = File.createTempFile("billy", "yay");
+      File someTmpFile = Files.createTempFile("billy", "yay").toFile();
       someTmpFile.delete();
       FileUtils.mkdirp(someTmpFile);
       someTmpFile.deleteOnExit();

@@ -61,7 +61,7 @@ public class HdfsDataSegmentPullerTest
   @BeforeClass
   public static void setupStatic() throws IOException
   {
-    hdfsTmpDir = File.createTempFile("hdfsHandlerTest", "dir");
+    hdfsTmpDir = Files.createTempFile("hdfsHandlerTest", "dir").toFile();
     if (!hdfsTmpDir.delete()) {
       throw new IOE("Unable to delete hdfsTmpDir [%s]", hdfsTmpDir.getAbsolutePath());
     }
@@ -70,7 +70,7 @@ public class HdfsDataSegmentPullerTest
     fileSystem.initialize(hdfsTmpDir.toURI(), conf);
     fileSystem.setWorkingDirectory(new Path(hdfsTmpDir.toURI()));
 
-    final File tmpFile = File.createTempFile("hdfsHandlerTest", ".data");
+    final File tmpFile = Files.createTempFile("hdfsHandlerTest", ".data").toFile();
     tmpFile.delete();
     try {
       Files.copy(new ByteArrayInputStream(pathByteContents), tmpFile.toPath());
@@ -109,7 +109,7 @@ public class HdfsDataSegmentPullerTest
   public void testZip() throws IOException, SegmentLoadingException
   {
     final File tmpDir = FileUtils.createTempDir();
-    final File tmpFile = File.createTempFile("zipContents", ".txt", tmpDir);
+    final File tmpFile = Files.createTempFile(tmpDir.toPath(), "zipContents", ".txt").toFile();
 
     final Path zipPath = new Path("/tmp/testZip.zip");
 

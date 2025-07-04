@@ -20,6 +20,7 @@
 package org.apache.druid.benchmark;
 
 import com.google.common.primitives.Ints;
+import java.nio.file.Files;
 import org.apache.druid.common.config.NullHandling;
 import org.apache.druid.java.util.common.FileUtils;
 import org.apache.druid.java.util.common.io.smoosh.FileSmoosher;
@@ -127,7 +128,7 @@ public class GenericIndexedBenchmark
       genericIndexedWriter.write(element.array());
     }
     smooshDir = FileUtils.createTempDir();
-    file = File.createTempFile("genericIndexedBenchmark", "meta");
+    file = Files.createTempFile("genericIndexedBenchmark", "meta").toFile();
 
     try (FileChannel fileChannel =
              FileChannel.open(file.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);

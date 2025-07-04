@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import java.nio.file.Files;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.druid.data.input.ColumnsFilter;
@@ -101,10 +102,7 @@ public class SqlInputSourceTest
 
   private File createFirehoseTmpDir(String dirSuffix) throws IOException
   {
-    final File firehoseTempDir = File.createTempFile(
-        SqlInputSourceTest.class.getSimpleName(),
-        dirSuffix
-    );
+    final File firehoseTempDir = Files.createTempFile(SqlInputSourceTest.class.getSimpleName(), dirSuffix).toFile();
     org.apache.commons.io.FileUtils.forceDelete(firehoseTempDir);
     FileUtils.mkdirp(firehoseTempDir);
     FIREHOSE_TMP_DIRS.add(firehoseTempDir);

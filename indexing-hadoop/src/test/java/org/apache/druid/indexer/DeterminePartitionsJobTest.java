@@ -21,6 +21,7 @@ package org.apache.druid.indexer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.nio.file.Files;
 import org.apache.druid.data.input.impl.CSVParseSpec;
 import org.apache.druid.data.input.impl.DimensionsSpec;
 import org.apache.druid.data.input.impl.StringInputRowParser;
@@ -271,7 +272,7 @@ public class DeterminePartitionsJobTest
     this.expectedNumOfShardsForEachSegment = expectedNumOfShardsForEachSegment;
     this.expectedStartEndForEachShard = expectedStartEndForEachShard;
 
-    dataFile = File.createTempFile("test_website_data", "tmp");
+    dataFile = Files.createTempFile("test_website_data", "tmp").toFile();
     dataFile.deleteOnExit();
     tmpDir = FileUtils.createTempDir();
     tmpDir.deleteOnExit();

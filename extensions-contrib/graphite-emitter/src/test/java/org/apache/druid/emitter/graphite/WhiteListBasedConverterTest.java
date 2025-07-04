@@ -19,6 +19,7 @@
 
 package org.apache.druid.emitter.graphite;
 
+import java.nio.file.Files;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.apache.commons.io.IOUtils;
@@ -100,7 +101,7 @@ public class WhiteListBasedConverterTest
   @Test
   public void testWhiteListedStringArrayDimension() throws IOException
   {
-    File mapFile = File.createTempFile("testing-" + System.nanoTime(), ".json");
+    File mapFile = Files.createTempFile("testing-" + System.nanoTime(), ".json").toFile();
     mapFile.deleteOnExit();
 
     try (OutputStream outputStream = new FileOutputStream(mapFile)) {

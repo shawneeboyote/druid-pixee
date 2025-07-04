@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.io.Files;
 import com.google.common.primitives.Ints;
+import java.nio.file.Files;
 import org.apache.datasketches.memory.Memory;
 import org.apache.datasketches.memory.WritableMemory;
 import org.apache.druid.frame.channel.ByteTracker;
@@ -225,7 +226,7 @@ public class FrameTest
         @Override
         Frame wrap(Closer closer) throws IOException
         {
-          final File file = File.createTempFile("frame-test", "");
+          final File file = Files.createTempFile("frame-test", "").toFile();
           closer.register(file::delete);
           Files.write(FRAME_DATA, file);
           final MappedByteBuffer buf = Files.map(file);
@@ -236,7 +237,7 @@ public class FrameTest
         @Override
         Frame decompress(Closer closer) throws IOException
         {
-          final File file = File.createTempFile("frame-test", "");
+          final File file = Files.createTempFile("frame-test", "").toFile();
           closer.register(file::delete);
           Files.write(FRAME_DATA_COMPRESSED, file);
           final MappedByteBuffer buf = Files.map(file);
