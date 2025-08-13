@@ -19,6 +19,7 @@
 
 package org.apache.druid.java.util.http.client;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.java.util.common.StringUtils;
 import org.asynchttpclient.DefaultAsyncHttpClient;
 import org.junit.Assert;
@@ -59,7 +60,7 @@ public class AsyncHttpClientTest
                   );
                   OutputStream out = clientSocket.getOutputStream()
               ) {
-                while (!in.readLine().equals("")) {
+                while (!BoundedLineReader.readLine(in, 5_000_000).equals("")) {
                   // skip lines
                 }
                 Thread.sleep(5000); // times out

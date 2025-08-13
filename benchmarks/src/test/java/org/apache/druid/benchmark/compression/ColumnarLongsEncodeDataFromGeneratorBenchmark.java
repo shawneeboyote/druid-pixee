@@ -19,6 +19,7 @@
 
 package org.apache.druid.benchmark.compression;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.segment.generator.ColumnValueGenerator;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -67,7 +68,7 @@ public class ColumnarLongsEncodeDataFromGeneratorBenchmark extends BaseColumnarL
       try (BufferedReader br = Files.newBufferedReader(dataFile.toPath(), StandardCharsets.UTF_8)) {
         int lineNum = 0;
         String line;
-        while ((line = br.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
           vals[lineNum] = Long.parseLong(line);
           if (vals[lineNum] < minValue) {
             minValue = vals[lineNum];

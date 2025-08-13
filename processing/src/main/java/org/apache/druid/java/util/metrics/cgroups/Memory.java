@@ -21,6 +21,7 @@ package org.apache.druid.java.util.metrics.cgroups;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Longs;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.druid.java.util.common.logger.Logger;
 
 import java.io.BufferedReader;
@@ -51,7 +52,7 @@ public class Memory
     try (final BufferedReader reader = Files.newBufferedReader(
         Paths.get(cgroupDiscoverer.discover(CGROUP).toString(), CGROUP_MEMORY_FILE)
     )) {
-      for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+      for (String line = BoundedLineReader.readLine(reader, 5_000_000); line != null; line = BoundedLineReader.readLine(reader, 5_000_000)) {
         final String[] parts = line.split(Pattern.quote(" "));
         if (parts.length != 2) {
           // ignore
@@ -72,7 +73,7 @@ public class Memory
     try (final BufferedReader reader = Files.newBufferedReader(
         Paths.get(cgroupDiscoverer.discover(CGROUP).toString(), CGROUP_MEMORY_NUMA_FILE)
     )) {
-      for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+      for (String line = BoundedLineReader.readLine(reader, 5_000_000); line != null; line = BoundedLineReader.readLine(reader, 5_000_000)) {
         // No safety checks here. Just fail as RuntimeException and catch later
         final String[] parts = line.split(Pattern.quote(" "));
         final String[] macro = parts[0].split(Pattern.quote("="));
